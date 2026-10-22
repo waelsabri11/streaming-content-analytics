@@ -1,0 +1,14 @@
+data/
+.venv/
+spark-warehouse/
+metastore_db/
+derby.log
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+mlruns/
+*.egg-info/
+.databricks/
+.tools/
+reports/results/*.csv
+reports/app_data/

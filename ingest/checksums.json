@@ -1,0 +1,46 @@
+{
+  "imdb/title.basics.tsv.gz": {
+    "bytes": 228972979,
+    "sha256": "cd2dfec7eeda0524c401420da84abbf2519532e7c2b6ac86be14972453c81107"
+  },
+  "imdb/title.episode.tsv.gz": {
+    "bytes": 55112087,
+    "sha256": "7da05f35ccf8cee46ab7ea31db1b1b2d9a671bc7be380077a27ef83d7ee35da3"
+  },
+  "netflix/2023H1.xlsx": {
+    "bytes": 695975,
+    "sha256": "c6fd33eb4c243e6e18d81a248ad71a28e8ccc3d0dd2b1fbc9f8538c649d28637"
+  },
+  "netflix/2023H2.xlsx": {
+    "bytes": 881985,
+    "sha256": "ea536b6e1f3771ba662e57a72ab847efd0200b3e4adb93a2f7d3e2b133f5b655"
+  },
+  "netflix/2024H1.xlsx": {
+    "bytes": 896503,
+    "sha256": "2803512229889f91b51c214b9494b7a55799767d63e3f5cf2c142b1917a18d62"
+  },
+  "netflix/2024H2.xlsx": {
+    "bytes": 872691,
+    "sha256": "3030e3630fb0ff90d8d84b9cda3c22c83f4e9e356d4f1742bda729bfa2fc738c"
+  },
+  "netflix/2025H1.xlsx": {
+    "bytes": 913605,
+    "sha256": "7208fc0207818f961652748d19500221b1d3edce8999b83e0f954f27fb31e8dd"
+  },
+  "netflix/2025H2.xlsx": {
+    "bytes": 931483,
+    "sha256": "a06b0f510264336ad31f29a0ed4aaa51247374dcaa8aee780bbecf50227635cb"
+  },
+  "netflix/2026H1.xlsx": {
+    "bytes": 988392,
+    "sha256": "bcfda87e87d09d923472a1e1b30d5c7c799457aacba41310a9d223e834fe2f5f"
+  },
+  "twitch/100k_a.csv": {
+    "bytes": 114131306,
+    "sha256": "11d3bdb49683f651eb6b0ba806bf317db68646efc0c7de2d02d750201fd8ef69"
+  },
+  "twitch/full_a.csv.gz": {
+    "bytes": 6943679726,
+    "sha256": "2475bcbf0a8fdf1864c78bd62aee35384f9ae371788348fa0b8831c5d827e11e"
+  }
+}
