@@ -1,0 +1,19 @@
+{"ts": "2026-10-22T13:51:08+00:00", "step": "bronze_ingest", "seconds": 690.26, "source": "full_a.csv.gz", "target": "bronze.twitch_interactions", "rows": 474676930}
+{"ts": "2026-10-22T13:53:23+00:00", "step": "silver_streamer_dim", "seconds": 11.57, "streamers": 790100}
+{"ts": "2026-10-22T13:55:28+00:00", "step": "silver_sessionize", "seconds": 124.86, "partitions": 192, "rows": 474676930}
+{"ts": "2026-10-22T13:57:21+00:00", "step": "gold_sessions", "seconds": 112.77, "sessions": 349257238}
+{"ts": "2026-10-22T14:13:03+00:00", "step": "gold_features_h1", "seconds": 161.31, "viewers": 14235545}
+{"ts": "2026-10-22T14:15:42+00:00", "step": "gold_features_h2", "seconds": 158.7, "viewers": 14601892}
+{"ts": "2026-10-22T14:22:15+00:00", "step": "gold_features", "seconds": 361.57, "viewers": 15524309, "peak_days": [6, 0]}
+{"ts": "2026-10-22T14:49:55+00:00", "step": "lifecurves_user_channel_day", "seconds": 50.49, "rows": 458656115}
+{"ts": "2026-10-22T14:50:46+00:00", "step": "lifecurves_channel_daily", "seconds": 51.76, "rows": 5287296}
+{"ts": "2026-10-22T14:51:56+00:00", "step": "lifecurves_retention", "seconds": 69.27, "rows": 28}
+{"ts": "2026-10-22T14:58:02+00:00", "step": "netflix_total", "seconds": 39.94, "titles_in_cohort": 2535}
+{"ts": "2026-10-22T15:02:14+00:00", "step": "segments_select_k", "seconds": 134.13, "n_sample": 311062}
+{"ts": "2026-10-22T15:02:33+00:00", "step": "segments_seed_stability", "seconds": 18.9, "k": 9}
+{"ts": "2026-10-22T15:04:47+00:00", "step": "segments_fit_final", "seconds": 132.01, "k": 9}
+{"ts": "2026-10-22T15:08:53+00:00", "step": "segments_time_halves", "seconds": 245.21, "k": 9}
+{"ts": "2026-10-22T15:09:01+00:00", "step": "segments_predictive_validity", "seconds": 7.92}
+{"ts": "2026-10-22T15:09:56+00:00", "step": "segments_als", "seconds": 54.77, "rank": 16, "als_users": 1343565, "als_channels": 7288}
+{"ts": "2026-10-22T15:16:44+00:00", "step": "segments_als_variant", "seconds": 400.66, "k": 9}
+{"ts": "2026-10-22T15:18:32+00:00", "step": "segments_channel_affinity", "seconds": 108.56}

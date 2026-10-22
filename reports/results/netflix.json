@@ -1,0 +1,579 @@
+{
+  "volumes": {
+    "bronze_rows": 115956,
+    "semesters": 7,
+    "titles_with_release_date": 7619,
+    "views_imputed_from_hours_over_runtime": 14276
+  },
+  "imdb_match": {
+    "n_titles": 2639,
+    "matched": 2231,
+    "match_rate": 0.8453959833270178,
+    "match_rate_series_seasons": 0.9482758620689655,
+    "match_rate_other": 0.719932716568545,
+    "reasons": {
+      "unique": 1981,
+      "no_name_match": 319,
+      "disambiguated_year": 250,
+      "ambiguous": 55,
+      "year_mismatch": 34
+    }
+  },
+  "cohort": {
+    "n_titles": 2535,
+    "by_release_semester": {
+      "2023H1": 325,
+      "2023H2": 386,
+      "2024H1": 329,
+      "2024H2": 380,
+      "2025H1": 381,
+      "2025H2": 385,
+      "2026H1": 349
+    },
+    "by_kind": {
+      "series_season": 1389,
+      "film": 797,
+      "tv_other": 349
+    },
+    "imdb_matched_share": 0.8536489151873767
+  },
+  "score": {
+    "target": "log(views in release semester)",
+    "folds": {
+      "2025H1": {
+        "test_semester": "2025H1",
+        "n_train": 1040,
+        "n_cal": 380,
+        "n_test": 381,
+        "lightgbm": {
+          "spearman": 0.546733191836744,
+          "top_decile_precision": 0.42105263157894735,
+          "mae_log": 1.1065212087078564,
+          "mape_log_scale": 0.07975537405751269,
+          "median_ape_views": 0.6396486013397064
+        },
+        "genre_median": {
+          "spearman": 0.5747833060534552,
+          "top_decile_precision": 0.2631578947368421,
+          "mae_log": 1.1513848391792476,
+          "mape_log_scale": 0.0815068655946729,
+          "median_ape_views": 0.722122657416691
+        },
+        "prior_season": {
+          "spearman": 0.635077887479378,
+          "top_decile_precision": 0.3684210526315789,
+          "mae_log": 1.1063160715512714,
+          "mape_log_scale": 0.07868384215705741,
+          "median_ape_views": 0.7142857142857133
+        },
+        "conformal": {
+          "target_coverage": 0.8,
+          "halfwidth_log": 1.3727666270120267,
+          "empirical_coverage": 0.7454068241469817
+        },
+        "on_titles_with_prior_season": {
+          "n": 60,
+          "lightgbm": {
+            "spearman": 0.671660496529614,
+            "top_decile_precision": 0.5,
+            "mae_log": 0.6776260939705262,
+            "mape_log_scale": 0.04350710556313832,
+            "median_ape_views": 0.5357643042345155
+          },
+          "prior_season": {
+            "spearman": 0.8576174067375025,
+            "top_decile_precision": 0.8333333333333334,
+            "mae_log": 0.524785584699929,
+            "mape_log_scale": 0.03493652841831242,
+            "median_ape_views": 0.4034049312765784
+          }
+        }
+      },
+      "2025H2": {
+        "test_semester": "2025H2",
+        "n_train": 1420,
+        "n_cal": 381,
+        "n_test": 385,
+        "lightgbm": {
+          "spearman": 0.686753600755249,
+          "top_decile_precision": 0.42105263157894735,
+          "mae_log": 0.8521311160109104,
+          "mape_log_scale": 0.057412514748156104,
+          "median_ape_views": 0.5928990168426506
+        },
+        "genre_median": {
+          "spearman": 0.4795846629104759,
+          "top_decile_precision": 0.15789473684210525,
+          "mae_log": 1.0271864379148785,
+          "mape_log_scale": 0.06990103431100873,
+          "median_ape_views": 0.6867626646377175
+        },
+        "prior_season": {
+          "spearman": 0.5346367324609397,
+          "top_decile_precision": 0.15789473684210525,
+          "mae_log": 1.0009641483671645,
+          "mape_log_scale": 0.0681951372079183,
+          "median_ape_views": 0.7095808383233542
+        },
+        "conformal": {
+          "target_coverage": 0.8,
+          "halfwidth_log": 1.6122485219458298,
+          "empirical_coverage": 0.8597402597402597
+        },
+        "on_titles_with_prior_season": {
+          "n": 52,
+          "lightgbm": {
+            "spearman": 0.8096061569735328,
+            "top_decile_precision": 0.6,
+            "mae_log": 0.4721109697585785,
+            "mape_log_scale": 0.031007559598297874,
+            "median_ape_views": 0.37632974004827835
+          },
+          "prior_season": {
+            "spearman": 0.8257119709026255,
+            "top_decile_precision": 0.6,
+            "mae_log": 0.62572447175775,
+            "mape_log_scale": 0.041553020546389645,
+            "median_ape_views": 0.6763513513513509
+          }
+        }
+      },
+      "2026H1": {
+        "test_semester": "2026H1",
+        "n_train": 1801,
+        "n_cal": 385,
+        "n_test": 349,
+        "lightgbm": {
+          "spearman": 0.6871184291600658,
+          "top_decile_precision": 0.5428571428571428,
+          "mae_log": 0.8218314457227099,
+          "mape_log_scale": 0.055345702066438365,
+          "median_ape_views": 0.5883004610141506
+        },
+        "genre_median": {
+          "spearman": 0.5342788149421938,
+          "top_decile_precision": 0.37142857142857144,
+          "mae_log": 0.984772624063676,
+          "mape_log_scale": 0.0671862296963559,
+          "median_ape_views": 0.6872427983539098
+        },
+        "prior_season": {
+          "spearman": 0.5964698624899397,
+          "top_decile_precision": 0.3142857142857143,
+          "mae_log": 0.9336109429878934,
+          "mape_log_scale": 0.06400004022179794,
+          "median_ape_views": 0.6521739130434782
+        },
+        "conformal": {
+          "target_coverage": 0.8,
+          "halfwidth_log": 1.3473514418227914,
+          "empirical_coverage": 0.830945558739255
+        },
+        "on_titles_with_prior_season": {
+          "n": 60,
+          "lightgbm": {
+            "spearman": 0.8341948958334036,
+            "top_decile_precision": 0.8333333333333334,
+            "mae_log": 0.4589103095796441,
+            "mape_log_scale": 0.0297682825909264,
+            "median_ape_views": 0.3604217953321127
+          },
+          "prior_season": {
+            "spearman": 0.8777481393299301,
+            "top_decile_precision": 0.5,
+            "mae_log": 0.5012889876714053,
+            "mape_log_scale": 0.03341334192012035,
+            "median_ape_views": 0.40993788819875754
+          }
+        }
+      }
+    },
+    "primary_fold": "2026H1",
+    "shap_top": [
+      {
+        "feature": "has_alt_title",
+        "mean_abs_shap": 0.21047427444803432
+      },
+      {
+        "feature": "primary_genre",
+        "mean_abs_shap": 0.20871218918233206
+      },
+      {
+        "feature": "kind",
+        "mean_abs_shap": 0.18915035430020122
+      },
+      {
+        "feature": "imdb_runtime",
+        "mean_abs_shap": 0.1784343835006955
+      },
+      {
+        "feature": "exposure_days",
+        "mean_abs_shap": 0.16769646055541745
+      },
+      {
+        "feature": "log_runtime",
+        "mean_abs_shap": 0.1413555671048799
+      },
+      {
+        "feature": "title_words",
+        "mean_abs_shap": 0.09183833276441483
+      },
+      {
+        "feature": "release_dow",
+        "mean_abs_shap": 0.06397428230176183
+      },
+      {
+        "feature": "season_no",
+        "mean_abs_shap": 0.06305593725629133
+      },
+      {
+        "feature": "franchise_recent_log_rate",
+        "mean_abs_shap": 0.06144456166959716
+      },
+      {
+        "feature": "g_Romance",
+        "mean_abs_shap": 0.05923883658664103
+      },
+      {
+        "feature": "release_month",
+        "mean_abs_shap": 0.05816716854818448
+      },
+      {
+        "feature": "prior_season_log_views",
+        "mean_abs_shap": 0.04952338543066437
+      },
+      {
+        "feature": "imdb_n_episodes",
+        "mean_abs_shap": 0.04615298958765379
+      },
+      {
+        "feature": "is_limited",
+        "mean_abs_shap": 0.041434640468338946
+      }
+    ],
+    "mlflow": {
+      "run_id": "ae39460a4d1f4afb94cfce83c91ec966",
+      "registered_model": null,
+      "model_uri": "runs:/ae39460a4d1f4afb94cfce83c91ec966/model"
+    }
+  },
+  "life_curves": {
+    "n_curve_points": 9555,
+    "n_titles": 2635,
+    "share_points_at_reporting_floor": 0.09188906331763474,
+    "by_kind": {
+      "film": {
+        "n_titles": 800,
+        "exp_rate_per_day": 0.004005674374389949,
+        "exp_half_life_days": 173.04131983157254,
+        "power_gamma": 1.2450683877128346,
+        "power_tau_days": 3.0,
+        "within_title_mse_log_exponential": 0.8837441757435776,
+        "within_title_mse_log_power": 0.19941875793730138,
+        "median_log_rate_by_k": {
+          "0": 11.82,
+          "1": 9.359,
+          "2": 8.863,
+          "3": 8.26,
+          "4": 8.106,
+          "5": 8.098,
+          "6": 8.512
+        },
+        "n_by_k": {
+          "0": 797,
+          "1": 679,
+          "2": 557,
+          "3": 450,
+          "4": 335,
+          "5": 232,
+          "6": 97
+        }
+      },
+      "series_season": {
+        "n_titles": 1447,
+        "exp_rate_per_day": 0.003524260233679542,
+        "exp_half_life_days": 196.6787735865514,
+        "power_gamma": 1.133232147640577,
+        "power_tau_days": 3.0,
+        "within_title_mse_log_exponential": 0.7956040183044608,
+        "within_title_mse_log_power": 0.2370343078971293,
+        "median_log_rate_by_k": {
+          "0": 11.282,
+          "1": 8.953,
+          "2": 8.495,
+          "3": 8.106,
+          "4": 8.09,
+          "5": 8.09,
+          "6": 8.106
+        },
+        "n_by_k": {
+          "0": 1390,
+          "1": 1196,
+          "2": 969,
+          "3": 749,
+          "4": 541,
+          "5": 370,
+          "6": 179
+        }
+      },
+      "tv_other": {
+        "n_titles": 394,
+        "exp_rate_per_day": 0.0039858653876729076,
+        "exp_half_life_days": 173.90130201176456,
+        "power_gamma": 1.115060085204827,
+        "power_tau_days": 3.0,
+        "within_title_mse_log_exponential": 0.8868079757894471,
+        "within_title_mse_log_power": 0.24713915811846573,
+        "median_log_rate_by_k": {
+          "0": 9.957,
+          "1": 8.09,
+          "2": 7.008,
+          "3": 7.413,
+          "4": 7.693,
+          "5": 7.549,
+          "6": 7.413
+        },
+        "n_by_k": {
+          "0": 370,
+          "1": 207,
+          "2": 187,
+          "3": 117,
+          "4": 74,
+          "5": 40,
+          "6": 19
+        }
+      }
+    }
+  },
+  "value_index_validation": {
+    "horizon_semesters": 4,
+    "shape_train": {
+      "cohorts": [
+        "2023H1",
+        "2023H2"
+      ],
+      "observations_until": "2024H2"
+    },
+    "test_cohorts": [
+      "2024H1",
+      "2024H2"
+    ],
+    "observed_1_semester": {
+      "n_titles": 709,
+      "dropout_share": 0.09308885754583918,
+      "all": {
+        "power": {
+          "spearman": 0.8756475141752629,
+          "median_ape": 0.5118823177966075,
+          "mean_log_ratio": 0.2743244164452724
+        },
+        "exponential": {
+          "spearman": 0.815631951719209,
+          "median_ape": 1.8029464351546496,
+          "mean_log_ratio": 1.0488067621243347
+        },
+        "median_ratio": {
+          "spearman": 0.8509333324559691,
+          "median_ape": 0.43928797314384566,
+          "mean_log_ratio": -0.027863479667869166
+        },
+        "persistence": {
+          "spearman": 0.8494589041989479,
+          "median_ape": 15.636363636363637,
+          "mean_log_ratio": 2.810324555552442
+        }
+      },
+      "survivors": {
+        "power": {
+          "spearman": 0.8714738303649961,
+          "median_ape": 0.4864936003767657,
+          "mean_log_ratio": 0.23090792578144634
+        },
+        "exponential": {
+          "spearman": 0.8179596434240416,
+          "median_ape": 1.6577499633674482,
+          "mean_log_ratio": 0.9937122509642338
+        },
+        "median_ratio": {
+          "spearman": 0.8526642278461596,
+          "median_ape": 0.4245760098092227,
+          "mean_log_ratio": -0.07905959130924914
+        },
+        "persistence": {
+          "spearman": 0.8513696848423814,
+          "median_ape": 15.147058823529411,
+          "mean_log_ratio": 2.758878339506867
+        }
+      }
+    },
+    "observed_2_semester": {
+      "n_titles": 672,
+      "dropout_share": 0.04613095238095233,
+      "all": {
+        "power": {
+          "spearman": 0.9185012259493872,
+          "median_ape": 0.30115085339451536,
+          "mean_log_ratio": -0.22009751273305048
+        },
+        "exponential": {
+          "spearman": 0.8510689222401272,
+          "median_ape": 0.4641289897694188,
+          "mean_log_ratio": -0.29002270698002025
+        },
+        "median_ratio": {
+          "spearman": 0.9017055316726322,
+          "median_ape": 0.3150183150183149,
+          "mean_log_ratio": -0.06954990090656749
+        },
+        "persistence": {
+          "spearman": 0.9020713073137292,
+          "median_ape": 1.0165745856353592,
+          "mean_log_ratio": 0.7354864866018536
+        }
+      },
+      "survivors": {
+        "power": {
+          "spearman": 0.9176115596328669,
+          "median_ape": 0.29728412824876826,
+          "mean_log_ratio": -0.2382657766454131
+        },
+        "exponential": {
+          "spearman": 0.8529442028922583,
+          "median_ape": 0.4641289897694188,
+          "mean_log_ratio": -0.3167920207310454
+        },
+        "median_ratio": {
+          "spearman": 0.9011445099821644,
+          "median_ape": 0.31371955604132645,
+          "mean_log_ratio": -0.0841891958312989
+        },
+        "persistence": {
+          "spearman": 0.9015355803043328,
+          "median_ape": 1.0165745856353592,
+          "mean_log_ratio": 0.7210440109695995
+        }
+      }
+    }
+  },
+  "life_curve_shapes_all_data": {
+    "film": {
+      "exp_b": 0.004005674374389949,
+      "power_g": 1.2450683877128346,
+      "tau": 3.0,
+      "median_log_ratio": {
+        "1": -2.471566227886955,
+        "2": -0.5705448584676134,
+        "3": -0.5301049800249089,
+        "4": -0.016438726343159793,
+        "5": 0.016438726343159793,
+        "6": 0.016438726343159793
+      },
+      "n_titles": 800
+    },
+    "series_season": {
+      "exp_b": 0.003524260233679542,
+      "power_g": 1.133232147640577,
+      "tau": 3.0,
+      "median_log_ratio": {
+        "1": -2.3973855431038666,
+        "2": -0.5569072544041642,
+        "3": -0.3520985083732646,
+        "4": -0.016438726343159793,
+        "5": -0.016438726343159793,
+        "6": 0.016438726343159793
+      },
+      "n_titles": 1447
+    },
+    "tv_other": {
+      "exp_b": 0.0039858653876729076,
+      "power_g": 1.115060085204827,
+      "tau": 3.0,
+      "median_log_ratio": {
+        "1": -2.5393721385997594,
+        "2": -0.34023621759557265,
+        "3": -0.35825472309825024,
+        "4": -0.016438726343159793,
+        "5": -0.2511103882862358,
+        "6": 0.016438726343159793
+      },
+      "n_titles": 394
+    }
+  },
+  "value_index": {
+    "horizon_semesters": 4,
+    "n_titles": 2635,
+    "n_fully_observed": 1344,
+    "top10": [
+      {
+        "title": "KPop Demon Hunters",
+        "kind": "film",
+        "rel_sem": "2025H1",
+        "value_views": 676163008.0134456,
+        "value_index": 47.954823263364936
+      },
+      {
+        "title": "War Machine",
+        "kind": "film",
+        "rel_sem": "2026H1",
+        "value_views": 232400574.0049609,
+        "value_index": 16.482310213117795
+      },
+      {
+        "title": "Squid Game: Season 2 // \uc624\uc9d5\uc5b4 \uac8c\uc784: \uc2dc\uc98c 2",
+        "kind": "series_season",
+        "rel_sem": "2024H2",
+        "value_views": 225400000.0,
+        "value_index": 24.236559139784948
+      },
+      {
+        "title": "Swapped",
+        "kind": "film",
+        "rel_sem": "2026H1",
+        "value_views": 222215417.78490588,
+        "value_index": 15.759958708149354
+      },
+      {
+        "title": "Back in Action",
+        "kind": "film",
+        "rel_sem": "2025H1",
+        "value_views": 218813634.2299594,
+        "value_index": 15.518697463117688
+      },
+      {
+        "title": "Apex",
+        "kind": "film",
+        "rel_sem": "2026H1",
+        "value_views": 216875434.73098123,
+        "value_index": 15.381236505743349
+      },
+      {
+        "title": "Carry-On",
+        "kind": "film",
+        "rel_sem": "2024H2",
+        "value_views": 207300000.0,
+        "value_index": 14.702127659574469
+      },
+      {
+        "title": "Leo",
+        "kind": "film",
+        "rel_sem": "2023H2",
+        "value_views": 207200000.0,
+        "value_index": 14.695035460992909
+      },
+      {
+        "title": "The Rip",
+        "kind": "film",
+        "rel_sem": "2026H1",
+        "value_views": 205583969.0581087,
+        "value_index": 14.580423337454517
+      },
+      {
+        "title": "Leave the World Behind",
+        "kind": "film",
+        "rel_sem": "2023H2",
+        "value_views": 205100000.0,
+        "value_index": 14.546099290780141
+      }
+    ]
+  }
+}

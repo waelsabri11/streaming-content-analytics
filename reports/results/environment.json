@@ -1,0 +1,8 @@
+{
+  "platform": "Darwin arm64",
+  "cpus": 12,
+  "ram_gb": 48,
+  "spark": "4.0.1",
+  "delta": "4.0.0",
+  "python": "3.12.15"
+}
