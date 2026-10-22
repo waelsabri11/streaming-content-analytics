@@ -1,0 +1,41 @@
+resources:
+  jobs:
+    streaming_content_batch:
+      name: streaming-content-batch-${bundle.target}
+      max_concurrent_runs: 1
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "3"
+            dependencies:
+              - ../dist/*.whl
+              - lightgbm>=4.5
+              - shap>=0.46
+              - openpyxl>=3.1
+              - mlflow-skinny>=2.16,<3
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: raw_root
+          default: /Volumes/${var.catalog}/bronze/raw
+      tasks:
+        - task_key: netflix_build_and_score
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["netflix", "--catalog", "{{job.parameters.catalog}}", "--raw-root", "{{job.parameters.raw_root}}"]
+        - task_key: twitch_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.twitch_silver.id}
+        - task_key: twitch_features_segments
+          depends_on: [{task_key: twitch_pipeline}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["twitch-segments", "--catalog", "{{job.parameters.catalog}}"]
+        - task_key: twitch_lifecurves
+          depends_on: [{task_key: twitch_pipeline}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["twitch-lifecurves", "--catalog", "{{job.parameters.catalog}}"]

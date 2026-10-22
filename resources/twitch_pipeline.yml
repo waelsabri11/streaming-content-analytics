@@ -1,0 +1,14 @@
+resources:
+  pipelines:
+    twitch_silver:
+      name: twitch-silver-${bundle.target}
+      catalog: ${var.catalog}
+      schema: silver
+      serverless: true
+      channel: CURRENT
+      configuration:
+        bundle.sourcePath: ${workspace.file_path}/src
+        twitch.raw_path: /Volumes/${var.catalog}/bronze/raw/twitch/
+      libraries:
+        - file:
+            path: ../pipelines/twitch_pipeline.py

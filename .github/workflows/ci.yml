@@ -1,0 +1,36 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync
+      - run: uv run ruff check src tests jobs pipelines app reports
+      # small synthetic fixtures only: no raw data, no network except Maven for the Delta jars
+      - run: uv run pytest -q
+      # README numbers must match the committed result files
+      - run: uv run python reports/make_results.py --check
+
+  bundle:
+    runs-on: ubuntu-latest
+    # `databricks bundle validate` resolves the workspace, so it needs real credentials.
+    # It only runs when the repository has them configured as secrets.
+    if: ${{ vars.DATABRICKS_VALIDATE == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: databricks/setup-cli@main
+      - run: databricks bundle validate -t dev
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}

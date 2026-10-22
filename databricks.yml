@@ -1,0 +1,25 @@
+# Databricks Asset Bundle: Lakeflow pipeline + job for the streaming-content lakehouse.
+# Validate:  databricks bundle validate -t dev      Deploy:  databricks bundle deploy -t dev
+bundle:
+  name: streaming-content-analytics
+
+variables:
+  catalog:
+    description: Unity Catalog catalog that holds the bronze/silver/gold schemas
+    default: workspace   # Free Edition default catalog
+
+artifacts:
+  sca_wheel:
+    type: whl
+    build: uv build --wheel
+    path: .
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: ${DATABRICKS_HOST}   # set via env / CLI profile; never committed
