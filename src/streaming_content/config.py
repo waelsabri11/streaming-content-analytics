@@ -9,7 +9,8 @@ ROOT = Path(__file__).resolve().parents[2]
 RAW = Path(os.environ.get("SCA_RAW_DIR", ROOT / "data" / "raw"))
 WAREHOUSE = Path(os.environ.get("SCA_WAREHOUSE", ROOT / "data" / "warehouse"))
 REPORTS = ROOT / "reports"
-RESULTS_DIR = REPORTS / "results"
+# On Databricks results go to a UC volume (SCA_RESULTS_DIR) and are copied back into the repo with the CLI.
+RESULTS_DIR = Path(os.environ.get("SCA_RESULTS_DIR", REPORTS / "results"))
 
 # Unity Catalog catalog on Databricks; empty string = local Delta tables in the default catalog.
 CATALOG = os.environ.get("SCA_CATALOG", "")

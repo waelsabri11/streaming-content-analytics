@@ -1,0 +1,92 @@
+{
+  "spark_version": "4.2.0",
+  "runtime": "client.3.6",
+  "checks": {
+    "kmeans": {
+      "ok": false,
+      "seconds": 0.19,
+      "error": "AssertionError: "
+    },
+    "bisecting_kmeans": {
+      "ok": false,
+      "seconds": 0.0,
+      "error": "AssertionError: "
+    },
+    "clustering_evaluator": {
+      "ok": false,
+      "seconds": 0.0,
+      "error": "AssertionError: "
+    },
+    "logreg_gbt_crossvalidator": {
+      "ok": false,
+      "seconds": 0.0,
+      "error": "AssertionError: "
+    },
+    "train_validation_split": {
+      "ok": false,
+      "seconds": 0.0,
+      "error": "AssertionError: "
+    },
+    "als": {
+      "ok": false,
+      "seconds": 0.0,
+      "error": "AssertionError: "
+    },
+    "df_cache": {
+      "ok": false,
+      "seconds": 0.83,
+      "error": "AnalysisException: [CACHE_REQUIRES_NEWER_CLIENT_ON_SERVERLESS_GC] df.cache(), df.persist(), and df.unpersist() require a newer client version on this compute. Upgrade your client to the minimum supported version for your environment and retry:\nDatabricks client environment: version 5 (v5) or above.\nDatabricks Connect "
+    },
+    "conf_set:spark.sql.shuffle.partitions": {
+      "ok": true,
+      "seconds": 0.29,
+      "detail": "current=auto"
+    },
+    "conf_set:spark.sql.adaptive.enabled": {
+      "ok": false,
+      "seconds": 0.23,
+      "error": "AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.adaptive.enabled is not available.  SQLSTATE: 42K0I\n\nJVM stacktrace:\norg.apache.spark.sql.AnalysisException\n\tat com.databricks.sql.connect.SparkConnectConfig$.assertConfigAllowedForRead(SparkConnectConfig.scala:678)\n\tat org.apache.spa"
+    },
+    "conf_set:spark.sql.autoBroadcastJoinThreshold": {
+      "ok": false,
+      "seconds": 0.21,
+      "error": "AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.autoBroadcastJoinThreshold is not available.  SQLSTATE: 42K0I\n\nJVM stacktrace:\norg.apache.spark.sql.AnalysisException\n\tat com.databricks.sql.connect.SparkConnectConfig$.assertConfigAllowedForRead(SparkConnectConfig.scala:678)\n\tat org."
+    },
+    "conf_set:spark.sql.adaptive.skewJoin.enabled": {
+      "ok": false,
+      "seconds": 0.15,
+      "error": "AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.adaptive.skewJoin.enabled is not available.  SQLSTATE: 42K0I\n\nJVM stacktrace:\norg.apache.spark.sql.AnalysisException\n\tat com.databricks.sql.connect.SparkConnectConfig$.assertConfigAllowedForRead(SparkConnectConfig.scala:678)\n\tat org.a"
+    },
+    "conf_set:spark.executor.memory": {
+      "ok": false,
+      "seconds": 0.18,
+      "error": "AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.executor.memory is not available.  SQLSTATE: 42K0I\n\nJVM stacktrace:\norg.apache.spark.sql.AnalysisException\n\tat com.databricks.sql.connect.SparkConnectConfig$.assertConfigAllowedForRead(SparkConnectConfig.scala:678)\n\tat org.apache.spark.sq"
+    },
+    "conf_set:spark.sql.files.maxPartitionBytes": {
+      "ok": true,
+      "seconds": 0.17,
+      "detail": "current=None"
+    },
+    "structured_streaming_available_now": {
+      "ok": true,
+      "seconds": 66.58,
+      "detail": 7
+    },
+    "delta_features": {
+      "ok": true,
+      "seconds": 42.21,
+      "detail": {
+        "history_rows": 6,
+        "time_travel_rows": 1000,
+        "cdf_rows": 1002
+      }
+    },
+    "system_tables": {
+      "ok": true,
+      "seconds": 4.67,
+      "detail": 23
+    }
+  },
+  "environment_version": "3",
+  "run_id": 741831167887847
+}

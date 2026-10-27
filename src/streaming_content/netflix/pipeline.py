@@ -239,7 +239,13 @@ def log_mlflow(fold_result: dict, metrics: dict) -> dict | None:
             for k, v in metrics["lightgbm"].items():
                 mlflow.log_metric(f"test_{k}", v)
             mlflow.log_metric("conformal_coverage", metrics["conformal"]["empirical_coverage"])
-            info = mlflow.lightgbm.log_model(fold_result["_model"], "model", registered_model_name=name)
+            from mlflow.models import infer_signature
+
+            from streaming_content.netflix.score import design
+
+            x_ex, _ = design(fold_result["_test"].head(5), fold_result["_cats"])
+            sig = infer_signature(x_ex, fold_result["_model"].predict(x_ex))
+            info = mlflow.lightgbm.log_model(fold_result["_model"], "model", registered_model_name=name, signature=sig)
             return {"run_id": run.info.run_id, "registered_model": name, "model_uri": info.model_uri}
     except Exception as e:  # logging must never fail the pipeline
         return {"error": f"{type(e).__name__}: {e}"}

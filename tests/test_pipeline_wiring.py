@@ -68,12 +68,13 @@ def test_bundle_references_exist():
     pipe = yaml.safe_load((ROOT / "resources" / "twitch_pipeline.yml").read_text())["resources"]["pipelines"]["twitch_silver"]
     for lib in pipe["libraries"]:
         assert (ROOT / "resources" / lib["file"]["path"]).resolve().exists()
-    jobs = yaml.safe_load((ROOT / "resources" / "jobs.yml").read_text())["resources"]["jobs"]["streaming_content_batch"]
-    for task in jobs["tasks"]:
-        if "spark_python_task" in task:
-            assert (ROOT / "resources" / task["spark_python_task"]["python_file"]).resolve().exists()
-            assert task["environment_key"] == "default"
-    keys = {t["task_key"] for t in jobs["tasks"]}
-    for t in jobs["tasks"]:
-        for dep in t.get("depends_on", []):
-            assert dep["task_key"] in keys
+    all_jobs = yaml.safe_load((ROOT / "resources" / "jobs.yml").read_text())["resources"]["jobs"]
+    for jobs in all_jobs.values():
+        for task in jobs["tasks"]:
+            if "spark_python_task" in task:
+                assert (ROOT / "resources" / task["spark_python_task"]["python_file"]).resolve().exists()
+                assert task["environment_key"] == "default"
+        keys = {t["task_key"] for t in jobs["tasks"]}
+        for t in jobs["tasks"]:
+            for dep in t.get("depends_on", []):
+                assert dep["task_key"] in keys

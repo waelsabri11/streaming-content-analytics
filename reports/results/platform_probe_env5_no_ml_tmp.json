@@ -1,0 +1,78 @@
+{
+ "environment_version": "5",
+ "run_id": 763898084658378,
+ "spark_version": "4.2.x (serverless)",
+ "note": "first v5 run without SPARKML_TEMP_DFS_PATH",
+ "checks": {
+  "kmeans": {
+   "ok": true,
+   "seconds": 26.0,
+   "detail": 3
+  },
+  "bisecting_kmeans": {
+   "raw": "{\"ok\": false, \"seconds\": 7.79, \"error\": \"UnsupportedOperationException: [DBFS_DISABLED] Public DBFS root is disabled. Access is denied on path: /local_disk0/tmp/spark_connect_model_cache/6ad92c06-bc8a-40d6-b318-0ec1455fee5a/0db60a2b-c015-41ab-a1bc-fc29b87b89a9/data/metadata/_delta_log SQLSTATE: 5603"
+  },
+  "clustering_evaluator": {
+   "ok": true,
+   "seconds": 7.08,
+   "detail": 0.6435982118678734
+  },
+  "logreg_gbt_crossvalidator": {
+   "raw": "{\"ok\": false, \"seconds\": 0.15, \"error\": \"PySparkException: In shared or serverless cluster, 'SPARKML_TEMP_DFS_PATH' environmental variable must be set to a UC volume path like '/Volumes/...' in order to support Saprk DataFrame caching.\", \"trace\": \"packages/pyspark/ml/base.py\\\", line 205, in fit\\n   "
+  },
+  "train_validation_split": {
+   "raw": "{\"ok\": false, \"seconds\": 0.01, \"error\": \"PySparkException: In shared or serverless cluster, 'SPARKML_TEMP_DFS_PATH' environmental variable must be set to a UC volume path like '/Volumes/...' in order to support Saprk DataFrame caching.\", \"trace\": \"   ^^^^^^^^^^^^^^^^^^\\n  File \\\"/databricks/python/l"
+  },
+  "als": {
+   "ok": true,
+   "seconds": 5.44,
+   "detail": 10
+  },
+  "df_cache": {
+   "ok": true,
+   "seconds": 13.72,
+   "detail": "cache accepted"
+  },
+  "conf_set:spark.sql.shuffle.partitions": {
+   "ok": true,
+   "seconds": 0.14,
+   "detail": "current=auto"
+  },
+  "conf_set:spark.sql.adaptive.enabled": {
+   "raw": "{\"ok\": false, \"seconds\": 0.15, \"error\": \"AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.adaptive.enabled is not available.  SQLSTATE: 42K0I\\n\\nJVM stacktrace:\\norg.apache.spark.sql.AnalysisException\\n\\tat com.databricks.sql.connect.SparkConnectConfig$.assertConf"
+  },
+  "conf_set:spark.sql.autoBroadcastJoinThreshold": {
+   "raw": "{\"ok\": false, \"seconds\": 0.13, \"error\": \"AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.autoBroadcastJoinThreshold is not available.  SQLSTATE: 42K0I\\n\\nJVM stacktrace:\\norg.apache.spark.sql.AnalysisException\\n\\tat com.databricks.sql.connect.SparkConnectConfig$."
+  },
+  "conf_set:spark.sql.adaptive.skewJoin.enabled": {
+   "raw": "{\"ok\": false, \"seconds\": 0.12, \"error\": \"AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.adaptive.skewJoin.enabled is not available.  SQLSTATE: 42K0I\\n\\nJVM stacktrace:\\norg.apache.spark.sql.AnalysisException\\n\\tat com.databricks.sql.connect.SparkConnectConfig$.a"
+  },
+  "conf_set:spark.executor.memory": {
+   "raw": "{\"ok\": false, \"seconds\": 0.11, \"error\": \"AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.executor.memory is not available.  SQLSTATE: 42K0I\\n\\nJVM stacktrace:\\norg.apache.spark.sql.AnalysisException\\n\\tat com.databricks.sql.connect.SparkConnectConfig$.assertConfigAll"
+  },
+  "conf_set:spark.sql.files.maxPartitionBytes": {
+   "ok": true,
+   "seconds": 0.08,
+   "detail": "current=None"
+  },
+  "structured_streaming_available_now": {
+   "ok": true,
+   "seconds": 39.94,
+   "detail": 7
+  },
+  "delta_features": {
+   "ok": true,
+   "seconds": 45.1,
+   "detail": {
+    "history_rows": 12,
+    "time_travel_rows": 1000,
+    "cdf_rows": 3004
+   }
+  },
+  "system_tables": {
+   "ok": true,
+   "seconds": 4.38,
+   "detail": 23
+  }
+ }
+}

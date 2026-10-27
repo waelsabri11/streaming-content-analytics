@@ -1156,7 +1156,6 @@ name = "streaming-content-analytics"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "delta-spark" },
     { name = "lightgbm" },
     { name = "matplotlib" },
     { name = "mlflow-skinny" },
@@ -1164,7 +1163,6 @@ dependencies = [
     { name = "openpyxl" },
     { name = "pandas" },
     { name = "pyarrow" },
-    { name = "pyspark" },
     { name = "requests" },
     { name = "scikit-learn" },
     { name = "scipy" },
@@ -1173,15 +1171,17 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "delta-spark" },
     { name = "plotly" },
+    { name = "pyspark" },
     { name = "pytest" },
+    { name = "pyyaml" },
     { name = "ruff" },
     { name = "streamlit" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "delta-spark", specifier = "==4.0.0" },
     { name = "lightgbm", specifier = ">=4.5" },
     { name = "matplotlib", specifier = ">=3.9" },
     { name = "mlflow-skinny", specifier = ">=2.16,<3" },
@@ -1189,7 +1189,6 @@ requires-dist = [
     { name = "openpyxl", specifier = ">=3.1" },
     { name = "pandas", specifier = ">=2.2" },
     { name = "pyarrow", specifier = ">=16" },
-    { name = "pyspark", specifier = "==4.0.1" },
     { name = "requests", specifier = ">=2.32" },
     { name = "scikit-learn", specifier = ">=1.5" },
     { name = "scipy", specifier = ">=1.13" },
@@ -1198,8 +1197,11 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "delta-spark", specifier = "==4.0.0" },
     { name = "plotly", specifier = ">=5.24" },
+    { name = "pyspark", specifier = "==4.0.1" },
     { name = "pytest", specifier = ">=8" },
+    { name = "pyyaml", specifier = ">=6" },
     { name = "ruff", specifier = ">=0.6" },
     { name = "streamlit", specifier = ">=1.38" },
 ]

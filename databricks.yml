@@ -22,4 +22,4 @@ targets:
     mode: development
     default: true
     workspace:
-      host: ${DATABRICKS_HOST}   # set via env / CLI profile; never committed
+      host: https://dbc-0d8ed9ac-0478.cloud.databricks.com   # workspace URL, not a secret

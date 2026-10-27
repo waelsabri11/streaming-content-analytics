@@ -8,20 +8,24 @@ import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+if "__file__" in globals():  # local runs; on Databricks the wheel provides the package
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("stage", choices=["netflix", "twitch-bronze", "twitch-silver", "twitch-features",
-                                     "twitch-segments", "twitch-lifecurves", "twitch-tuning"])
+                                     "twitch-segments", "twitch-lifecurves", "twitch-tuning", "twitch-churn", "twitch-abtest"])
     p.add_argument("--catalog", default="")
     p.add_argument("--raw-root", default=None)
+    p.add_argument("--results-dir", default=None)
     a = p.parse_args()
     if a.catalog:
         os.environ["SCA_CATALOG"] = a.catalog
     if a.raw_root:
         os.environ["SCA_RAW_DIR"] = a.raw_root
+    if a.results_dir:
+        os.environ["SCA_RESULTS_DIR"] = a.results_dir
 
     from streaming_content import config
     from streaming_content.spark import get_spark
@@ -34,7 +38,10 @@ def main() -> None:
     elif a.stage == "twitch-bronze":
         from streaming_content.twitch import bronze
 
-        bronze.ingest(spark, Path(config.RAW) / "twitch" / "full_a.csv.gz")
+        parts = Path(config.RAW) / "twitch_parts"
+        # 24 re-split gzip parts load in parallel; the single 6.9 GB gzip is an unsplittable one-task read
+        src = f"{parts}/part-*.csv.gz" if parts.exists() and any(parts.glob("part-*.csv.gz")) else Path(config.RAW) / "twitch" / "full_a.csv.gz"
+        bronze.ingest(spark, src)
     elif a.stage == "twitch-silver":
         from streaming_content.twitch import pipeline
 
@@ -51,6 +58,14 @@ def main() -> None:
         from streaming_content.twitch import lifecurves_job
 
         lifecurves_job.run(spark)
+    elif a.stage == "twitch-churn":
+        from streaming_content.twitch import churn
+
+        churn.run(spark)
+    elif a.stage == "twitch-abtest":
+        from streaming_content.twitch import abtest
+
+        abtest.run(spark)
     elif a.stage == "twitch-tuning":
         from streaming_content.twitch import tuning
 

@@ -17,3 +17,8 @@
 {"ts": "2026-10-22T15:09:56+00:00", "step": "segments_als", "seconds": 54.77, "rank": 16, "als_users": 1343565, "als_channels": 7288}
 {"ts": "2026-10-22T15:16:44+00:00", "step": "segments_als_variant", "seconds": 400.66, "k": 9}
 {"ts": "2026-10-22T15:18:32+00:00", "step": "segments_channel_affinity", "seconds": 108.56}
+{"ts": "2026-10-27T11:27:27+00:00", "step": "churn_build_datasets", "seconds": 186.12, "n_train": 11358809, "n_test": 2910491}
+{"ts": "2026-10-27T11:27:56+00:00", "step": "churn_logreg", "seconds": 28.96, "seconds_note": "includes tuning, final fit and test metrics"}
+{"ts": "2026-10-27T11:30:26+00:00", "step": "churn_gbt", "seconds": 150.61}
+{"ts": "2026-10-27T11:31:03+00:00", "step": "ab_population", "seconds": 23.62, "viewers": 14201600}
+{"ts": "2026-10-27T11:31:12+00:00", "step": "ab_simulate", "seconds": 8.93}

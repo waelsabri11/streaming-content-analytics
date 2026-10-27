@@ -84,3 +84,41 @@ def test_imdb_match_by_year_and_type():
     assert imdb.match_title("Heat", None, 2024, True, idx)[0] == "t3"
     assert imdb.match_title("Not There", None, 2023, False, idx) == (None, "no_name_match")
     assert imdb.match_title("Heat (1995)", None, 2023, False, idx)[0] == "t1"
+
+
+def test_cuped_reduces_variance_and_keeps_mean():
+    from streaming_content.twitch import abtest
+
+    rng = np.random.default_rng(0)
+    x = rng.normal(10, 3, 50_000)
+    y = 2 * x + rng.normal(0, 1, 50_000)
+    adj, theta = abtest.cuped_adjust(y, x)
+    assert theta == pytest.approx(2.0, abs=0.02)
+    assert adj.mean() == pytest.approx(y.mean(), abs=1e-9)
+    assert adj.var() / y.var() < 0.05  # corr ~0.99 -> variance falls ~1 - rho^2
+
+
+def test_aa_false_positive_rate_and_power_formula():
+    from streaming_content.twitch import abtest
+
+    pop = pd.DataFrame({"pre_hours": np.random.default_rng(1).gamma(2, 3, 40_000)})
+    pop["post_hours"] = 0.7 * pop["pre_hours"] + np.random.default_rng(2).gamma(2, 2, 40_000)
+    r = abtest.simulate_aa_ab(pop, n_per_arm_sim=2000, effect_rel=0.0, reps=300, seed=3)
+    assert 0.02 < r["naive"]["aa_false_positive_rate"] < 0.09 and 0.02 < r["cuped"]["aa_false_positive_rate"] < 0.09
+    assert r["variance_reduction_se_ratio_squared"] < 1
+    sigma, n = 5.0, 1000
+    delta = abtest.mde(sigma, n)
+    assert abtest.n_per_arm(sigma, delta) == pytest.approx(n, abs=2)
+
+
+def test_msprt_controls_error_under_peeking():
+    from streaming_content.twitch import abtest
+
+    rng = np.random.default_rng(4)
+    rejects = 0
+    for _ in range(400):
+        x = rng.normal(0, 1, 2000)
+        n = np.arange(1, 2001)
+        d = np.cumsum(x) / n  # running mean of a null effect
+        rejects += abtest.msprt_pvalues(d[19::20], 1.0 / n[19::20], tau2=0.05)[-1] < 0.05
+    assert rejects / 400 < 0.08

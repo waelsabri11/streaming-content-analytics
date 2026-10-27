@@ -233,6 +233,35 @@ def build() -> tuple[str, str]:
         mf = nf["score"].get("mlflow") or {}
         out.append(f"\nMLflow: {mf}\n")
 
+    ch = load("twitch_churn")
+    if ch:
+        out.append("\n## 7. Viewer re-engagement model (Spark MLlib, full data)\n")
+        out.append(f"Train: features from slots {ch['train_spec']['feat_lo']}-{ch['train_spec']['cutoff']} (3 weeks), label = any viewing in the following week; test: window shifted by one week; "
+                   f"{100 - ch['test_viewer_bucket_pct']}% / {ch['test_viewer_bucket_pct']}% hash split of viewers, so no viewer is on both sides. Rows: {n(ch['n_train'])} train, {n(ch['n_test'])} test. "
+                   f"Return rate: {ch['train_positive_rate']:.1%} train, {ch['gbt']['test']['positive_rate']:.1%} test.\n")
+        rows = []
+        for m, label in (("logreg", "Logistic regression"), ("gbt", "GBTClassifier")):
+            x = ch[m]["test"]
+            rows.append([label, f(x["roc_auc"]), f(x["pr_auc"]), f(x["brier"], 4), f(x["brier_baseline_constant"], 4), f(x["lift_top_decile"], 3), f(x["churn_lift_top_risk_decile"], 2), f(x["churn_precision_top_risk_decile"], 3)])
+        out.append("\n" + md_table(rows, ["Model", "ROC-AUC", "PR-AUC (return class)", "Brier", "Brier of constant base rate", "Lift top decile (return)", "Churn lift, riskiest decile", f"Churn precision, riskiest decile (base {ch['gbt']['test']['churn_rate']:.1%})"]) + "\n")
+        out.append(f"\nGBT best params {ch['gbt']['best_params']} (TrainValidationSplit on a {ch['gbt']['tune_sample_rows']:,}-viewer sample, {ch['gbt']['grid_size']} configurations); "
+                   "top features: " + ", ".join(f"{a} ({b:.2f})" for a, b in ch["gbt"]["feature_importance"][:6]) + ".\n")
+        cal = ch["gbt"]["test"]["calibration_deciles"]
+        out.append("\nGBT calibration by decile of predicted return probability (decile 1 = most likely to return): " + "; ".join(f"{c['decile']}: {c['mean_pred']:.3f} vs {c['observed_rate']:.3f}" for c in cal) + "\n")
+        key.append(f"| Re-engagement model, test (n={n(ch['n_test'])}): ROC-AUC GBT / logistic regression | {f(ch['gbt']['test']['roc_auc'], 3)} / {f(ch['logreg']['test']['roc_auc'], 3)} |")
+        key.append(f"| Re-engagement model: churn lift in riskiest decile, GBT | {f(ch['gbt']['test']['churn_lift_top_risk_decile'], 2)}x |")
+    ab = load("ab_simulation")
+    if ab:
+        pp, sm, sq = ab["population"], ab["aa_ab_simulation"], ab["sequential"]
+        out.append("\n## 8. A/B testing simulation (synthetic effect on real Twitch variance)\n")
+        out.append(f"{ab['label']} Population {n(pp['n'])} viewers; weekly hours mean {f(pp['mu_post'], 2)}, sd {f(pp['sd_post'], 2)}; pre/post correlation {f(pp['rho'], 3)}; return rate {pp['return_rate']:.1%}.\n")
+        rows = [[k, f"{ab['mde_naive_relative'][k]:.2%}", f"{ab['mde_cuped_relative'][k]:.2%}"] for k in ab["mde_naive_relative"]]
+        out.append("\n" + md_table(rows, ["Viewers per arm", "MDE naive (relative)", "MDE CUPED (relative)"]) + f"\n\nViewers per arm for a 2% effect: naive {n(ab['n_per_arm_for_2pct_effect']['naive'])}, CUPED {n(ab['n_per_arm_for_2pct_effect']['cuped'])}.\n")
+        rows = [[k, f"{sm[k]['aa_false_positive_rate']:.2%}", f"{sm[k]['ab_power']:.1%}", f(sm[k]["aa_mean_se"], 4), f"{sm[k]['ab_ci95_coverage_of_true_effect']:.1%}"] for k in ("naive", "cuped")]
+        out.append(f"\nA/A and A/B, {sm['n_per_arm']:,} viewers per arm, {sm['reps']} repetitions, injected effect {sm['injected_relative_effect']:.0%}:\n\n" + md_table(rows, ["Estimator", "A/A false positive rate", "A/B power", "Mean SE (hours)", "95% CI coverage"]) + f"\n\nSE ratio squared (CUPED / naive): {f(sm['variance_reduction_se_ratio_squared'], 3)}.\n")
+        rows = [[sc, f"{sq[sc]['naive_peeking_reject_rate']:.1%}", f"{sq[sc]['msprt_reject_rate']:.1%}", sq[sc]["msprt_median_stop_n_per_arm"]] for sc in ("aa", "ab")]
+        out.append(f"\nSequential testing, {sq['looks']} looks up to {sq['n_max_per_arm']:,} viewers per arm, {sq['reps']} repetitions:\n\n" + md_table(rows, ["Scenario", "Naive peeking: reject rate", "mSPRT: reject rate", "mSPRT median stop (viewers/arm)"]) + "\n")
+        key.append(f"| A/B simulation: CUPED variance ratio (rho {f(pp['rho'], 2)}) / A/A false positives naive peeking, 10 looks | {f(sm['variance_reduction_se_ratio_squared'], 2)} / {sq['aa']['naive_peeking_reject_rate']:.1%} |")
     er = load("earlier_run")
     if er:
         out.append(f"\n## 6. Superseded first segmentation run\n\n{er['note']} Single-seed KMeans chose k = {er['k_chosen']} with bootstrap ARI {er['k5_bootstrap_ari_mean']}; "

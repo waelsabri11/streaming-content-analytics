@@ -1,41 +1,57 @@
 resources:
   jobs:
-    streaming_content_batch:
-      name: streaming-content-batch-${bundle.target}
+    sca_netflix:
+      name: sca-netflix-${bundle.target}
       max_concurrent_runs: 1
       environments:
         - environment_key: default
           spec:
-            environment_version: "3"
+            environment_version: "5"
             dependencies:
               - ../dist/*.whl
-              - lightgbm>=4.5
-              - shap>=0.46
-              - openpyxl>=3.1
-              - mlflow-skinny>=2.16,<3
-      parameters:
-        - name: catalog
-          default: ${var.catalog}
-        - name: raw_root
-          default: /Volumes/${var.catalog}/bronze/raw
       tasks:
         - task_key: netflix_build_and_score
           environment_key: default
           spark_python_task:
             python_file: ../jobs/run.py
-            parameters: ["netflix", "--catalog", "{{job.parameters.catalog}}", "--raw-root", "{{job.parameters.raw_root}}"]
-        - task_key: twitch_pipeline
-          pipeline_task:
-            pipeline_id: ${resources.pipelines.twitch_silver.id}
-        - task_key: twitch_features_segments
-          depends_on: [{task_key: twitch_pipeline}]
+            parameters: ["netflix", "--catalog", "${var.catalog}", "--raw-root", "/Volumes/${var.catalog}/bronze/raw", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+
+    sca_twitch:
+      name: sca-twitch-${bundle.target}
+      max_concurrent_runs: 1
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "5"
+            dependencies:
+              - ../dist/*.whl
+      tasks:
+        - task_key: bronze
           environment_key: default
           spark_python_task:
             python_file: ../jobs/run.py
-            parameters: ["twitch-segments", "--catalog", "{{job.parameters.catalog}}"]
-        - task_key: twitch_lifecurves
-          depends_on: [{task_key: twitch_pipeline}]
+            parameters: ["twitch-bronze", "--catalog", "${var.catalog}", "--raw-root", "/Volumes/${var.catalog}/bronze/raw", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: silver
+          depends_on: [{task_key: bronze}]
           environment_key: default
           spark_python_task:
             python_file: ../jobs/run.py
-            parameters: ["twitch-lifecurves", "--catalog", "{{job.parameters.catalog}}"]
+            parameters: ["twitch-silver", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: features
+          depends_on: [{task_key: silver}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["twitch-features", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: segments
+          depends_on: [{task_key: features}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["twitch-segments", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: lifecurves
+          depends_on: [{task_key: silver}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["twitch-lifecurves", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]

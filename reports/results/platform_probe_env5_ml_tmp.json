@@ -1,0 +1,84 @@
+{
+ "environment_version": "5",
+ "run_id": 976797111542115,
+ "note": "environment v5 + SPARKML_TEMP_DFS_PATH set to a UC volume",
+ "checks": {
+  "kmeans": {
+   "ok": true,
+   "seconds": 8.7,
+   "detail": 3
+  },
+  "bisecting_kmeans": {
+   "raw": "{\"ok\": false, \"seconds\": 6.06, \"error\": \"UnsupportedOperationException: [DBFS_DISABLED] Public DBFS root is disabled. Access is denied on path: /local_disk0/tmp/spark_connect_model_cache/4fb4396f-aead-4911-bad5-bbcd43461e54/9af798cd-9af3-4b5b-838e-88daf6b552b1/data/metadata/_delta_log SQLSTATE: 5603"
+  },
+  "clustering_evaluator": {
+   "ok": true,
+   "seconds": 6.03,
+   "detail": 0.6435982118678734
+  },
+  "logreg_gbt_crossvalidator": {
+   "ok": true,
+   "seconds": 43.77,
+   "detail": {
+    "lr_auc": 0.5097041610918343,
+    "gbt_auc": 0.5487893004498697
+   }
+  },
+  "train_validation_split": {
+   "ok": true,
+   "seconds": 15.65,
+   "detail": "ok"
+  },
+  "als": {
+   "ok": true,
+   "seconds": 4.19,
+   "detail": 10
+  },
+  "df_cache": {
+   "ok": true,
+   "seconds": 3.73,
+   "detail": "cache accepted"
+  },
+  "conf_set:spark.sql.shuffle.partitions": {
+   "ok": true,
+   "seconds": 0.06,
+   "detail": "current=auto"
+  },
+  "conf_set:spark.sql.adaptive.enabled": {
+   "raw": "{\"ok\": false, \"seconds\": 0.1, \"error\": \"AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.adaptive.enabled is not available.  SQLSTATE: 42K0I\\n\\nJVM stacktrace:\\norg.apache.spark.sql.AnalysisException\\n\\tat com.databricks.sql.connect.SparkConnectConfig$.assertConfi"
+  },
+  "conf_set:spark.sql.autoBroadcastJoinThreshold": {
+   "raw": "{\"ok\": false, \"seconds\": 0.13, \"error\": \"AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.autoBroadcastJoinThreshold is not available.  SQLSTATE: 42K0I\\n\\nJVM stacktrace:\\norg.apache.spark.sql.AnalysisException\\n\\tat com.databricks.sql.connect.SparkConnectConfig$."
+  },
+  "conf_set:spark.sql.adaptive.skewJoin.enabled": {
+   "raw": "{\"ok\": false, \"seconds\": 0.1, \"error\": \"AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.sql.adaptive.skewJoin.enabled is not available.  SQLSTATE: 42K0I\\n\\nJVM stacktrace:\\norg.apache.spark.sql.AnalysisException\\n\\tat com.databricks.sql.connect.SparkConnectConfig$.as"
+  },
+  "conf_set:spark.executor.memory": {
+   "raw": "{\"ok\": false, \"seconds\": 0.48, \"error\": \"AnalysisException: [CONFIG_NOT_AVAILABLE.WITHOUT_SUGGESTION] Configuration spark.executor.memory is not available.  SQLSTATE: 42K0I\\n\\nJVM stacktrace:\\norg.apache.spark.sql.AnalysisException\\n\\tat com.databricks.sql.connect.SparkConnectConfig$.assertConfigAll"
+  },
+  "conf_set:spark.sql.files.maxPartitionBytes": {
+   "ok": true,
+   "seconds": 0.08,
+   "detail": "current=None"
+  },
+  "structured_streaming_available_now": {
+   "ok": true,
+   "seconds": 30.1,
+   "detail": 7
+  },
+  "delta_features": {
+   "ok": true,
+   "seconds": 23.13,
+   "detail": {
+    "history_rows": 18,
+    "time_travel_rows": 1000,
+    "cdf_rows": 5006
+   }
+  },
+  "system_tables": {
+   "ok": true,
+   "seconds": 3.16,
+   "detail": 23
+  }
+ }
+}

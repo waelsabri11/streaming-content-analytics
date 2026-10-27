@@ -17,6 +17,8 @@ def on_databricks() -> bool:
 
 def get_spark(app: str = "streaming-content", cores: str = "*", driver_mem: str = "24g") -> SparkSession:
     if on_databricks():
+        # serverless Spark ML stages models/data through a UC volume path (probe: reports/results/platform_probe_*.json)
+        os.environ.setdefault("SPARKML_TEMP_DFS_PATH", f"/Volumes/{config.CATALOG or 'workspace'}/bronze/raw/_ml_tmp")
         return SparkSession.builder.getOrCreate()
     from delta import configure_spark_with_delta_pip
 

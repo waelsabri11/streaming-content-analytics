@@ -13,8 +13,10 @@ from streaming_content import config
 def log(record: dict) -> None:
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     record = {"ts": datetime.now(timezone.utc).isoformat(timespec="seconds"), **record}
-    with (config.RESULTS_DIR / "timings.jsonl").open("a") as f:
-        f.write(json.dumps(record) + "\n")
+    # read-modify-write: append mode raises "Illegal seek" on UC volumes (FUSE)
+    path = config.RESULTS_DIR / "timings.jsonl"
+    old = path.read_text() if path.exists() else ""
+    path.write_text(old + json.dumps(record) + "\n")
 
 
 @contextmanager

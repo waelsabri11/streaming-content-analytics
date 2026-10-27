@@ -41,6 +41,9 @@ All values come from [`reports/results.md`](reports/results.md), which is genera
 | IMDb match rate (cohort) | 84.5% |
 | Value-index hold-out Spearman (1 semester observed): power / exponential / median-ratio / persistence | 0.87 / 0.82 / 0.85 / 0.85 |
 | Value-index hold-out median APE (1 semester observed): power / exponential / median-ratio / persistence | 0.49 / 1.66 / 0.42 / 15.15 |
+| Re-engagement model, test (n=2,910,491): ROC-AUC GBT / logistic regression | 0.799 / 0.785 |
+| Re-engagement model: churn lift in riskiest decile, GBT | 2.51x |
+| A/B simulation: CUPED variance ratio (rho 0.71) / A/A false positives naive peeking, 10 looks | 0.49 / 19.3% |
 <!-- KEY-NUMBERS:END -->
 
 ## What the results say (including what did not work)

@@ -1,0 +1,266 @@
+{
+  "train_spec": {
+    "feat_lo": 0,
+    "cutoff": 3024
+  },
+  "test_spec": {
+    "feat_lo": 1008,
+    "cutoff": 4032
+  },
+  "features": [
+    "recency_days",
+    "tenure_days",
+    "log_hours",
+    "log_sessions",
+    "log_active_days",
+    "sessions_per_active_day",
+    "mean_session_min",
+    "log_streamers",
+    "top1_share",
+    "recent_hours_share",
+    "last_week_hours",
+    "last_week_active_days",
+    "share_night",
+    "share_evening",
+    "max_gap_days"
+  ],
+  "test_viewer_bucket_pct": 20,
+  "label": "any viewing with start in [cutoff, cutoff + 1008 slots)",
+  "n_train": 11358809,
+  "n_test": 2910491,
+  "train_positive_rate": 0.7962200086294259,
+  "logreg": {
+    "best_regParam": 0.0,
+    "tuning_pr_auc": 0.9339028131031676,
+    "tune_sample_rows": 1136508,
+    "test": {
+      "n": 2910491,
+      "positive_rate": 0.777855695138724,
+      "roc_auc": 0.7845061116553339,
+      "pr_auc": 0.9301376624791309,
+      "brier": 0.14331178865451538,
+      "brier_baseline_constant": 0.17279621267897646,
+      "lift_top_decile": 1.2779528156790756,
+      "precision_top_decile": 0.994062875794537,
+      "churn_rate": 0.222144304861276,
+      "churn_lift_top_risk_decile": 2.4305358757490962,
+      "churn_precision_top_risk_decile": 0.5399297025586757,
+      "calibration_deciles": [
+        {
+          "decile": 1,
+          "mean_pred": 0.9900163812644632,
+          "observed_rate": 0.994062875794537,
+          "n": 291050
+        },
+        {
+          "decile": 2,
+          "mean_pred": 0.9718278763281657,
+          "observed_rate": 0.9816285230322042,
+          "n": 291049
+        },
+        {
+          "decile": 3,
+          "mean_pred": 0.9429242145420351,
+          "observed_rate": 0.9507024590361073,
+          "n": 291049
+        },
+        {
+          "decile": 4,
+          "mean_pred": 0.9012713729883958,
+          "observed_rate": 0.8925438671838762,
+          "n": 291049
+        },
+        {
+          "decile": 5,
+          "mean_pred": 0.8497969981874238,
+          "observed_rate": 0.815986311583273,
+          "n": 291049
+        },
+        {
+          "decile": 6,
+          "mean_pred": 0.7914157922858701,
+          "observed_rate": 0.7419644114908486,
+          "n": 291049
+        },
+        {
+          "decile": 7,
+          "mean_pred": 0.7310657489427984,
+          "observed_rate": 0.7038917845448704,
+          "n": 291049
+        },
+        {
+          "decile": 8,
+          "mean_pred": 0.6712240679940183,
+          "observed_rate": 0.6569340557775495,
+          "n": 291049
+        },
+        {
+          "decile": 9,
+          "mean_pred": 0.5901050002991347,
+          "observed_rate": 0.5807716226477329,
+          "n": 291049
+        },
+        {
+          "decile": 10,
+          "mean_pred": 0.4846540581105132,
+          "observed_rate": 0.4600702974413243,
+          "n": 291049
+        }
+      ]
+    }
+  },
+  "gbt": {
+    "best_params": {
+      "maxDepth": 6,
+      "stepSize": 0.2
+    },
+    "tuning_pr_auc": 0.9401630768696891,
+    "grid_size": 4,
+    "tune_sample_rows": 1136508,
+    "test": {
+      "n": 2910491,
+      "positive_rate": 0.777855695138724,
+      "roc_auc": 0.7990679381687888,
+      "pr_auc": 0.9361160801662627,
+      "brier": 0.13962725411690774,
+      "brier_baseline_constant": 0.17279621267897646,
+      "lift_top_decile": 1.2817382366392411,
+      "precision_top_decile": 0.9970073870468992,
+      "churn_rate": 0.222144304861276,
+      "churn_lift_top_risk_decile": 2.5117517125095516,
+      "churn_precision_top_risk_decile": 0.5579713381595539,
+      "calibration_deciles": [
+        {
+          "decile": 1,
+          "mean_pred": 0.9840322242372822,
+          "observed_rate": 0.9970073870468992,
+          "n": 291050
+        },
+        {
+          "decile": 2,
+          "mean_pred": 0.9785268735848937,
+          "observed_rate": 0.9866379887922653,
+          "n": 291049
+        },
+        {
+          "decile": 3,
+          "mean_pred": 0.9578398537367323,
+          "observed_rate": 0.9590137743129163,
+          "n": 291049
+        },
+        {
+          "decile": 4,
+          "mean_pred": 0.9090508944517571,
+          "observed_rate": 0.90455215444822,
+          "n": 291049
+        },
+        {
+          "decile": 5,
+          "mean_pred": 0.8412501713638485,
+          "observed_rate": 0.8301213884947208,
+          "n": 291049
+        },
+        {
+          "decile": 6,
+          "mean_pred": 0.7713155913807576,
+          "observed_rate": 0.7596590264869489,
+          "n": 291049
+        },
+        {
+          "decile": 7,
+          "mean_pred": 0.71487045604334,
+          "observed_rate": 0.6884442138608963,
+          "n": 291049
+        },
+        {
+          "decile": 8,
+          "mean_pred": 0.6730871462438739,
+          "observed_rate": 0.6369202436703099,
+          "n": 291049
+        },
+        {
+          "decile": 9,
+          "mean_pred": 0.6183463133405842,
+          "observed_rate": 0.5741713594618089,
+          "n": 291049
+        },
+        {
+          "decile": 10,
+          "mean_pred": 0.464494347327258,
+          "observed_rate": 0.4420286618404461,
+          "n": 291049
+        }
+      ]
+    },
+    "feature_importance": [
+      [
+        "log_active_days",
+        0.29676145280107546
+      ],
+      [
+        "last_week_active_days",
+        0.2807114742582021
+      ],
+      [
+        "recency_days",
+        0.16809217223581963
+      ],
+      [
+        "log_sessions",
+        0.12878711229061215
+      ],
+      [
+        "last_week_hours",
+        0.030876154677892606
+      ],
+      [
+        "log_streamers",
+        0.0290001702587478
+      ],
+      [
+        "max_gap_days",
+        0.015316918367422275
+      ],
+      [
+        "sessions_per_active_day",
+        0.013088179015161162
+      ],
+      [
+        "top1_share",
+        0.01248043725420748
+      ],
+      [
+        "log_hours",
+        0.007102046194104159
+      ],
+      [
+        "tenure_days",
+        0.006661145114808015
+      ],
+      [
+        "recent_hours_share",
+        0.00490743545929491
+      ],
+      [
+        "mean_session_min",
+        0.0026379852484310624
+      ],
+      [
+        "share_evening",
+        0.001881058676899141
+      ],
+      [
+        "share_night",
+        0.0016962581473222386
+      ]
+    ]
+  },
+  "mlflow": {
+    "logreg": {
+      "run_id": "4ac14837bea744bbb1e42955b94e6aa2"
+    },
+    "gbt": {
+      "run_id": "24efacae233545d092d36730a3bbc194"
+    }
+  }
+}

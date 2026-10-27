@@ -31,8 +31,8 @@ def ingest(spark: SparkSession, path: str | Path, target: str | None = None, max
     """Single-pass load. No repartition: the gzip read is one task anyway, and a shuffle of the
     474M-row table would double the disk footprint; maxRecordsPerFile keeps output files splittable."""
     target = target or config.table("bronze", "twitch_interactions")
-    with timed("bronze_ingest", source=Path(path).name, target=target) as out:
-        df = read_raw(spark, path).withColumn("_source", F.lit(Path(path).name))
+    with timed("bronze_ingest", source=Path(str(path)).name, target=target) as out:
+        df = read_raw(spark, path).withColumn("_source", F.lit(Path(str(path)).name))
         (df.write.format("delta").mode("overwrite").option("maxRecordsPerFile", max_rows_per_file)
            .saveAsTable(target))
         n = spark.table(target).count()
