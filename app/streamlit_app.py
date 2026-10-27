@@ -8,6 +8,7 @@ Run:  streamlit run app/streamlit_app.py
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -16,7 +17,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-DATA = Path(__file__).resolve().parents[1] / "reports" / "app_data"
+_here = Path(__file__).resolve().parent
+# Databricks Apps ships app_data next to this file; locally it is exported to reports/app_data
+DATA = Path(os.environ.get("SCA_APP_DATA", _here / "app_data" if (_here / "app_data").exists() else _here.parent / "reports" / "app_data"))
 st.set_page_config(page_title="Streaming content analytics", layout="wide")
 
 

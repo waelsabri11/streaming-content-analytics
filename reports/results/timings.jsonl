@@ -24,3 +24,4 @@
 {"ts": "2026-10-27T11:31:12+00:00", "step": "ab_simulate", "seconds": 8.93}
 {"ts": "2026-10-27T11:39:15+00:00", "step": "stream_prepare", "seconds": 13.06, "events": 4162135, "chunks": 28, "write_seconds": 6.5, "viewer_pct": 2, "slots": [0, 1008]}
 {"ts": "2026-10-27T11:40:20+00:00", "step": "stream_replay", "seconds": 64.95, "input_rows": 4162135}
+{"ts": "2026-10-27T14:01:18+00:00", "step": "netflix_total", "seconds": 24.1, "titles_in_cohort": 2535}

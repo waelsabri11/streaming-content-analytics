@@ -1,0 +1,35 @@
+{
+ "space_id": "01f1d20c1c861beabd466c007ee611fd",
+ "answers": [
+  {
+   "question": "How many viewers and how much watch time does each viewer segment have?",
+   "status": "COMPLETED",
+   "seconds": 17.2,
+   "sql": "SELECT `segment`, COUNT(DISTINCT `user_id`) AS viewers, SUM(`hours`) AS total_watch_time\nFROM `workspace`.`gold`.`twitch_viewer_segments`\nWHERE `segment` IS NOT NULL AND `hours` IS NOT NULL\nGROUP BY `segment`\nORDER BY `segment`"
+  },
+  {
+   "question": "Which Netflix titles have the highest value index?",
+   "status": "COMPLETED",
+   "seconds": 17.0,
+   "sql": "WITH ranked_titles AS (\n  SELECT \n    `workspace`.`gold`.`netflix_value_index`.title,\n    `workspace`.`gold`.`netflix_value_index`.value_index,\n    RANK() OVER (ORDER BY `workspace`.`gold`.`netflix_value_index`.value_index DESC) AS rnk\n  FROM `workspace`.`gold`.`netflix_value_index`\n  WHERE `workspace`.`gold`.`netflix_value_index`.value_index IS NOT NULL\n    AND `workspace`.`gold`.`netflix_value_index`.title IS NOT NULL\n)\nSELECT ranked_titles.title, ranked_titles.value_index\nFROM ranked_titles\nWHERE ranked_titles.rnk = 1;"
+  },
+  {
+   "question": "What is the median views per exposure day by kind and semesters since release?",
+   "status": "COMPLETED",
+   "seconds": 19.6,
+   "sql": "SELECT netflix_life_curves.kind, netflix_life_curves.semester, APPROX_PERCENTILE(netflix_life_curves.rate, 0.5) AS median_views_per_exposure_day\nFROM workspace.gold.netflix_life_curves\nWHERE netflix_life_curves.kind IS NOT NULL AND netflix_life_curves.semester IS NOT NULL AND netflix_life_curves.rate IS NOT NULL\nGROUP BY netflix_life_curves.kind, netflix_life_curves.semester\nORDER BY netflix_life_curves.kind, netflix_life_curves.semester"
+  },
+  {
+   "question": "How well did the 80% interval cover the actual views in each test semester?",
+   "status": "COMPLETED",
+   "seconds": 16.9,
+   "sql": "SELECT `fold`, try_divide(100.0 * SUM(CASE WHEN `y` >= `lo` AND `y` <= `hi` THEN 1 ELSE 0 END),COUNT(*)) AS coverage_percent FROM `workspace`.`gold`.`netflix_performance_score` WHERE `lo` IS NOT NULL AND `hi` IS NOT NULL AND `y` IS NOT NULL GROUP BY `fold`"
+  },
+  {
+   "question": "Which Twitch channels had the most viewer-days?",
+   "status": "COMPLETED",
+   "seconds": 17.0,
+   "sql": "WITH ranked_channels AS (\n  SELECT \n    tcd.streamer_id,\n    ts.streamer,\n    SUM(tcd.viewers) AS total_viewer_days,\n    RANK() OVER (ORDER BY SUM(tcd.viewers) DESC) AS rank\n  FROM workspace.gold.twitch_channel_daily tcd\n  JOIN workspace.silver.twitch_streamers ts ON tcd.streamer_id = ts.streamer_id\n  WHERE tcd.streamer_id IS NOT NULL AND tcd.viewers IS NOT NULL\n  GROUP BY tcd.streamer_id, ts.streamer\n)\nSELECT streamer_id, streamer, total_viewer_days\nFROM ranked_channels\nWHERE rank = 1;"
+  }
+ ]
+}

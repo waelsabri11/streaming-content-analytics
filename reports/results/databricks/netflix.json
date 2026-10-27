@@ -41,7 +41,7 @@
     "table": "workspace.gold.netflix_cohort",
     "rows": 2535,
     "y_sum": 39258.44523687966,
-    "delta_version": 5
+    "delta_version": 15
   },
   "score": {
     "target": "log(views in release semester)",
@@ -258,10 +258,10 @@
       }
     ],
     "mlflow": {
-      "run_id": "43d58cc14fef4ddd9cce9818c899fd6f",
+      "run_id": "0feb412a5f6b41038208cb568a5cdb9b",
       "registered_model": "workspace.gold.netflix_performance_score",
-      "model_uri": "runs:/43d58cc14fef4ddd9cce9818c899fd6f/model",
-      "alias": "challenger=v6 (spearman 0.6871 <= champion 0.6871)"
+      "model_uri": "runs:/0feb412a5f6b41038208cb568a5cdb9b/model",
+      "alias": "promoted v7 (spearman 0.6871 > 0.6871); previous champion v5 -> challenger"
     }
   },
   "life_curves": {

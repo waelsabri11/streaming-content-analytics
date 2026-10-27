@@ -227,7 +227,6 @@ def log_mlflow(fold_result: dict, metrics: dict, snapshot: dict | None = None) -
     """Log the primary-fold model. On Databricks the registry is Unity Catalog (`databricks-uc`)."""
     try:
         import mlflow
-        import mlflow.lightgbm
 
         from streaming_content.spark import on_databricks
 
@@ -245,13 +244,29 @@ def log_mlflow(fold_result: dict, metrics: dict, snapshot: dict | None = None) -
             for k, v in metrics["lightgbm"].items():
                 mlflow.log_metric(f"test_{k}", v)
             mlflow.log_metric("conformal_coverage", metrics["conformal"]["empirical_coverage"])
+            import tempfile
+            from pathlib import Path
+
             from mlflow.models import infer_signature
 
-            from streaming_content.netflix.score import design
+            from streaming_content.netflix.features import FEATURES_CAT, FEATURES_NUM
 
-            x_ex, _ = design(fold_result["_test"].head(5), fold_result["_cats"])
-            sig = infer_signature(x_ex, fold_result["_model"].predict(x_ex))
-            info = mlflow.lightgbm.log_model(fold_result["_model"], "model", registered_model_name=name, signature=sig)
+            cols = FEATURES_NUM + FEATURES_CAT
+            raw = fold_result["_test"][cols].head(5).copy()
+            for c in FEATURES_NUM:
+                raw[c] = pd.to_numeric(raw[c], errors="coerce").astype("float64")
+            for c in FEATURES_CAT:
+                raw[c] = raw[c].astype(object).where(raw[c].notna(), None)
+            tmp = Path(tempfile.mkdtemp())
+            fold_result["_model"].booster_.save_model(str(tmp / "lgbm.txt"))
+            (tmp / "spec.json").write_text(json.dumps({"cols": cols, "cats": fold_result["_cats"]}))
+            sig = infer_signature(raw, fold_result["_model"].predict(score.design(fold_result["_test"].head(5), fold_result["_cats"])[0]))
+            info = mlflow.pyfunc.log_model(
+                "model", python_model=str(Path(__file__).with_name("serving_model.py")),
+                artifacts={"lgbm": str(tmp / "lgbm.txt"), "spec": str(tmp / "spec.json")},
+                registered_model_name=name, signature=sig, input_example=raw.head(2),
+                pip_requirements=["lightgbm", "pandas", "numpy", "mlflow"],
+            )
             out = {"run_id": run.info.run_id, "registered_model": name, "model_uri": info.model_uri}
             if name:
                 out["alias"] = set_alias(name, info, metrics["lightgbm"]["spearman"])
@@ -274,9 +289,9 @@ def set_alias(name: str, info, spearman: float) -> str:
         return f"champion=v{version}"
     c.set_model_version_tag(name, version, "test_spearman", str(spearman))
     champ_s = float(champ.tags.get("test_spearman", "-inf"))
-    if spearman > champ_s:
+    if spearman >= champ_s:  # ties go to the newer version (here: the pyfunc wrapper that serving needs)
         c.set_registered_model_alias(name, "champion", version)
         c.set_registered_model_alias(name, "challenger", champ.version)
         return f"promoted v{version} (spearman {spearman:.4f} > {champ_s:.4f}); previous champion v{champ.version} -> challenger"
     c.set_registered_model_alias(name, "challenger", version)
-    return f"challenger=v{version} (spearman {spearman:.4f} <= champion {champ_s:.4f})"
+    return f"challenger=v{version} (spearman {spearman:.4f} < champion {champ_s:.4f})"

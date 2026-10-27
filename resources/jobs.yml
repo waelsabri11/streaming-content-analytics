@@ -38,6 +38,12 @@ resources:
           spark_python_task:
             python_file: ../jobs/run.py
             parameters: ["lakehouse", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: export_app_data
+          depends_on: [{task_key: lakehouse}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["export-app-data", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
 
     sca_twitch:
       name: sca-twitch-${bundle.target}

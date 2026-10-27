@@ -127,7 +127,7 @@ python ingest/download.py all             # ~7.4 GB; Twitch full file is 6.9 GB;
 python jobs/run.py twitch-bronze && python jobs/run.py twitch-silver && python jobs/run.py twitch-features
 python jobs/run.py twitch-segments && python jobs/run.py twitch-lifecurves && python jobs/run.py twitch-tuning
 python jobs/run.py netflix
-python jobs/export_app_data.py && streamlit run app/streamlit_app.py
+python jobs/run.py export-app-data && streamlit run app/streamlit_app.py
 python reports/make_results.py && python reports/make_figures.py
 uv run pytest                             # synthetic fixtures only, no raw data
 ```

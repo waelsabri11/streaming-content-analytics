@@ -12,3 +12,4 @@ mlruns/
 .tools/
 reports/results/*.csv
 reports/app_data/
+app/app_data/
