@@ -330,6 +330,12 @@ def build() -> tuple[str, str]:
         if sv:
             out.append(f"\n**Model Serving** (`{sv['endpoint']}`, CPU, scale-to-zero; {sv['client']}; {sv['requests']} requests, {sv['errors']} errors): first request {f(sv['first_request_seconds'], 2)} s; "
                        f"p50 {f(sv['p50_s'] * 1000, 0)} ms, p95 {f(sv['p95_s'] * 1000, 0)} ms, p99 {f(sv['p99_s'] * 1000, 0)} ms.\n")
+    bd, bl = load("benchmark_databricks"), load("benchmark_local_24g", local=True)
+    if bd and bl and "100" in bd and "100" in bl:
+        w = lambda d: sorted(r["total_seconds"] for r in d["100"]["runs"] if r["kind"] == "warm")[0]  # noqa: E731
+        key.append(f"| Benchmark, 100% of data (474.7M rows): sessionize + features + KMeans, warm: Databricks serverless / Mac (24 GB heap) | {w(bd):.0f} s / {w(bl):.0f} s |")
+        c1 = bd["1"]["runs"][1]["total_seconds"], bl["1"]["runs"][1]["total_seconds"]
+        key.append(f"| Benchmark, 1% of data, warm: Databricks / Mac | {c1[0]:.0f} s / {c1[1]:.0f} s |")
     er = load("earlier_run")
     if er:
         out.append(f"\n## 6. Superseded first segmentation run\n\n{er['note']} Single-seed KMeans chose k = {er['k_chosen']} with bootstrap ARI {er['k5_bootstrap_ari_mean']}; "

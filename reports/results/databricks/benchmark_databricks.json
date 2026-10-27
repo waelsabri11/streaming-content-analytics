@@ -1,0 +1,150 @@
+{
+ "1": {
+  "label": "databricks",
+  "pct": 1,
+  "runs": [
+   {
+    "sessionize_seconds": 17.71,
+    "rows": 4764554,
+    "features_seconds": 7.29,
+    "viewers": 155542,
+    "kmeans_seconds": 9.04,
+    "total_seconds": 34.05,
+    "repeat": 1,
+    "kind": "cold"
+   },
+   {
+    "sessionize_seconds": 9.12,
+    "rows": 4764554,
+    "features_seconds": 5.95,
+    "viewers": 155542,
+    "kmeans_seconds": 7.62,
+    "total_seconds": 22.69,
+    "repeat": 2,
+    "kind": "warm"
+   },
+   {
+    "sessionize_seconds": 9.66,
+    "rows": 4764554,
+    "features_seconds": 5.57,
+    "viewers": 155542,
+    "kmeans_seconds": 8.1,
+    "total_seconds": 23.32,
+    "repeat": 3,
+    "kind": "warm"
+   }
+  ],
+  "session_start_seconds": 0.9492041569999969
+ },
+ "10": {
+  "label": "databricks",
+  "pct": 10,
+  "runs": [
+   {
+    "sessionize_seconds": 17.84,
+    "rows": 47429616,
+    "features_seconds": 22.67,
+    "viewers": 1552616,
+    "kmeans_seconds": 12.4,
+    "total_seconds": 52.91,
+    "repeat": 1,
+    "kind": "cold"
+   },
+   {
+    "sessionize_seconds": 19.1,
+    "rows": 47429616,
+    "features_seconds": 21.96,
+    "viewers": 1552616,
+    "kmeans_seconds": 11.62,
+    "total_seconds": 52.67,
+    "repeat": 2,
+    "kind": "warm"
+   },
+   {
+    "sessionize_seconds": 19.29,
+    "rows": 47429616,
+    "features_seconds": 20.95,
+    "viewers": 1552616,
+    "kmeans_seconds": 11.24,
+    "total_seconds": 51.48,
+    "repeat": 3,
+    "kind": "warm"
+   }
+  ],
+  "session_start_seconds": 0.9036656090000292
+ },
+ "50": {
+  "label": "databricks",
+  "pct": 50,
+  "runs": [
+   {
+    "sessionize_seconds": 49.99,
+    "rows": 237382905,
+    "features_seconds": 94.47,
+    "viewers": 7761233,
+    "kmeans_seconds": 52.78,
+    "total_seconds": 197.24,
+    "repeat": 1,
+    "kind": "cold"
+   },
+   {
+    "sessionize_seconds": 52.04,
+    "rows": 237382905,
+    "features_seconds": 93.41,
+    "viewers": 7761233,
+    "kmeans_seconds": 42.38,
+    "total_seconds": 187.83,
+    "repeat": 2,
+    "kind": "warm"
+   },
+   {
+    "sessionize_seconds": 52.75,
+    "rows": 237382905,
+    "features_seconds": 93.42,
+    "viewers": 7761233,
+    "kmeans_seconds": 48.04,
+    "total_seconds": 194.21,
+    "repeat": 3,
+    "kind": "warm"
+   }
+  ],
+  "session_start_seconds": 0.9999669999999696
+ },
+ "100": {
+  "label": "databricks",
+  "pct": 100,
+  "runs": [
+   {
+    "sessionize_seconds": 91.5,
+    "rows": 474676930,
+    "features_seconds": 235.54,
+    "viewers": 15524309,
+    "kmeans_seconds": 132.19,
+    "total_seconds": 459.23,
+    "repeat": 1,
+    "kind": "cold"
+   },
+   {
+    "sessionize_seconds": 91.6,
+    "rows": 474676930,
+    "features_seconds": 196.46,
+    "viewers": 15524309,
+    "kmeans_seconds": 191.69,
+    "total_seconds": 479.75,
+    "repeat": 2,
+    "kind": "warm"
+   },
+   {
+    "sessionize_seconds": 88.75,
+    "rows": 474676930,
+    "features_seconds": 198.56,
+    "viewers": 15524309,
+    "kmeans_seconds": 140.23,
+    "total_seconds": 427.54,
+    "repeat": 3,
+    "kind": "warm"
+   }
+  ],
+  "session_start_seconds": 1.0604980620000788
+ }
+}

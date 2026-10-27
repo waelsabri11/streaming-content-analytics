@@ -109,5 +109,42 @@
    }
   ],
   "session_start_seconds": 4.255764250003267
+ },
+ "100": {
+  "label": "local_24g",
+  "pct": 100,
+  "runs": [
+   {
+    "sessionize_seconds": 106.7,
+    "rows": 474676930,
+    "features_seconds": 379.35,
+    "viewers": 15524309,
+    "kmeans_seconds": 22.06,
+    "total_seconds": 508.1,
+    "repeat": 1,
+    "kind": "cold"
+   },
+   {
+    "sessionize_seconds": 104.82,
+    "rows": 474676930,
+    "features_seconds": 371.73,
+    "viewers": 15524309,
+    "kmeans_seconds": 21.62,
+    "total_seconds": 498.17,
+    "repeat": 2,
+    "kind": "warm"
+   },
+   {
+    "sessionize_seconds": 111.46,
+    "rows": 474676930,
+    "features_seconds": 396.98,
+    "viewers": 15524309,
+    "kmeans_seconds": 22.68,
+    "total_seconds": 531.12,
+    "repeat": 3,
+    "kind": "warm"
+   }
+  ],
+  "session_start_seconds": 4.847162083009607
  }
 }

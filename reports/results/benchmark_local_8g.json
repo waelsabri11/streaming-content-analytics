@@ -1,0 +1,19 @@
+{
+ "100": {
+  "label": "local_8g",
+  "pct": 100,
+  "runs": [
+   {
+    "sessionize_seconds": 178.26,
+    "rows": 474676930,
+    "features_seconds": 393.76,
+    "viewers": 15524309,
+    "kmeans_seconds": 22.96,
+    "total_seconds": 594.98,
+    "repeat": 1,
+    "kind": "cold"
+   }
+  ],
+  "session_start_seconds": 4.663528208009666
+ }
+}

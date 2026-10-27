@@ -1,0 +1,10 @@
+{
+ "100": {
+  "label": "local_4g",
+  "pct": 100,
+  "runs": [],
+  "failed": true,
+  "error": "SparkOutOfMemoryError: [UNABLE_TO_ACQUIRE_MEMORY] Unable to acquire 262144 bytes of memory, got 0. SQLSTATE: 53200",
+  "note": "Extracted from the run log: the 4 GB driver-heap run aborted with a Spark out-of-memory error"
+ }
+}

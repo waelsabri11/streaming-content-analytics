@@ -14,13 +14,14 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 RES, APP, IMG = ROOT / "reports" / "results", ROOT / "reports" / "app_data", ROOT / "docs" / "img"
+RESD = RES / "databricks"  # figures show the Databricks results
 IMG.mkdir(parents=True, exist_ok=True)
 plt.rcParams.update({"font.size": 9, "axes.spines.top": False, "axes.spines.right": False, "figure.dpi": 130})
 C = ["#2a6f97", "#c8553d", "#6a994e", "#8d6a9f", "#b08900"]
 
 
 def segments():
-    r = json.loads((RES / "twitch_segments.json").read_text())
+    r = json.loads((RESD / "twitch_segments.json").read_text())
     p = pd.DataFrame(r["profile"]).sort_values("hours_share", ascending=False)
     cols = ["log_hours", "log_sessions", "log_streamers", "norm_entropy", "top1_share", "repeat_share", "share_night", "share_evening"]
     z = p.set_index("name")[cols]
@@ -74,7 +75,7 @@ def curves():
     ax[0].set_ylabel("views per exposure day")
     ax[0].legend(frameon=False)
     ax[0].set_title("Netflix life curves (dashed: fitted power law)\nlate points are survivors")
-    r = json.loads((RES / "twitch_lifecurves.json").read_text())
+    r = json.loads((RESD / "twitch_lifecurves.json").read_text())
     for i, (tier, d) in enumerate(r["decay"].items()):
         ages = sorted(int(a) for a in d["returning_share_by_age"])
         ax[1].plot(ages, [d["returning_share_by_age"][str(a)] for a in ages], "o-", color=C[i], label=tier)

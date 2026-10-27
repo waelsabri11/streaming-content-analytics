@@ -49,6 +49,11 @@ def main() -> None:
         out.append("## Throughput vs volume\n\n" + md(rows, ["Volume (viewer sample)", "Interval rows", "Viewers", "Where", "Sessionize s (cold)", "Features s (cold)", "KMeans s (cold)", "Total s (cold)", "Total s (warm, median)"]) + "\n")
         cross = [p for p in pcts if series["databricks"][p]["warm"] and series["local"][p]["warm"] and series["databricks"][p]["warm"] < series["local"][p]["warm"]]
         out.append("\n**Crossover (warm totals)**: " + (f"Databricks serverless is faster from {min(cross)}% of the data upward." if cross else "Databricks serverless is not faster than the Mac at any measured volume.") + "\n")
+        top = pcts[-1]
+        dk, lk = dbk[str(top)]["runs"], loc[str(top)]["runs"]
+        out.append(f"\nAt {top}% (all {dk[0]['rows']:,} rows) the warm total is {agg(dk, 'total_seconds', 'warm'):.0f} s on Databricks vs {agg(lk, 'total_seconds', 'warm'):.0f} s on the Mac; "
+                   f"the feature aggregation is faster on serverless ({agg(dk, 'features_seconds', 'warm'):.0f} s vs {agg(lk, 'features_seconds', 'warm'):.0f} s) while the MLlib KMeans fit is slower ({agg(dk, 'kmeans_seconds', 'warm'):.0f} s vs {agg(lk, 'kmeans_seconds', 'warm'):.0f} s). "
+                   f"At 1% the Mac is faster ({agg(loc[str(pcts[0])]['runs'], 'total_seconds', 'warm'):.0f} s vs {agg(dbk[str(pcts[0])]['runs'], 'total_seconds', 'warm'):.0f} s).\n")
         fig, ax = plt.subplots(figsize=(6, 4))
         for lab in series:
             x = [p for p in pcts]
@@ -68,7 +73,9 @@ def main() -> None:
     rows = []
     for mem in ("8g", "4g"):
         d = load(RES / f"benchmark_local_{mem}.json")
-        if d and "100" in d:
+        if d and d.get("100", {}).get("failed"):
+            rows.append([mem, "FAILED", d["100"]["error"]])
+        elif d and "100" in d:
             r = d["100"]["runs"][0]
             rows.append([mem, f"{r['total_seconds']:.0f} s", f"sessionize {r['sessionize_seconds']:.0f} s, features {r['features_seconds']:.0f} s, KMeans {r['kmeans_seconds']:.0f} s"])
         else:

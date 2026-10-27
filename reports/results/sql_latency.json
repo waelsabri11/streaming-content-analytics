@@ -1,0 +1,127 @@
+{
+ "queries": {
+  "segments": {
+   "databricks_p50": 1.2208819389343262,
+   "databricks_p95": 1.6335753917694091,
+   "databricks_runs": [
+    1.22,
+    1.16,
+    1.68,
+    1.44,
+    1.08
+   ],
+   "local_p50": 0.3840504999971017,
+   "local_p95": 0.4179067581950221,
+   "local_runs": [
+    0.42,
+    0.4,
+    0.38,
+    0.38,
+    0.38
+   ]
+  },
+  "netflix_curve": {
+   "databricks_p50": 1.2659401893615723,
+   "databricks_p95": 1.4483369827270507,
+   "databricks_runs": [
+    1.28,
+    1.25,
+    1.27,
+    1.49,
+    1.07
+   ],
+   "local_p50": 0.1520867079962045,
+   "local_p95": 0.1708590169902891,
+   "local_runs": [
+    0.17,
+    0.16,
+    0.15,
+    0.15,
+    0.15
+   ]
+  },
+  "score": {
+   "databricks_p50": 1.1560781002044678,
+   "databricks_p95": 1.4651132583618163,
+   "databricks_runs": [
+    1.16,
+    1.07,
+    1.2,
+    1.08,
+    1.53
+   ],
+   "local_p50": 0.1285583749995567,
+   "local_p95": 0.13498478300170974,
+   "local_runs": [
+    0.12,
+    0.12,
+    0.13,
+    0.13,
+    0.14
+   ]
+  },
+  "value": {
+   "databricks_p50": 1.1279091835021973,
+   "databricks_p95": 1.147609567642212,
+   "databricks_runs": [
+    1.03,
+    1.15,
+    1.13,
+    1.13,
+    1.04
+   ],
+   "local_p50": 0.09549037500983104,
+   "local_p95": 0.09922315818839707,
+   "local_runs": [
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.09
+   ]
+  },
+  "retention": {
+   "databricks_p50": 1.049760103225708,
+   "databricks_p95": 1.138930320739746,
+   "databricks_runs": [
+    1.13,
+    1.05,
+    1.14,
+    1.05,
+    1.05
+   ],
+   "local_p50": 0.18069220799952745,
+   "local_p95": 0.1908463829953689,
+   "local_runs": [
+    0.19,
+    0.19,
+    0.17,
+    0.18,
+    0.18
+   ]
+  },
+  "stream": {
+   "databricks_p50": 1.1396160125732422,
+   "databricks_p95": 1.358680820465088,
+   "databricks_runs": [
+    1.04,
+    1.14,
+    1.27,
+    1.38,
+    1.03
+   ],
+   "local_p50": 0.3668047089886386,
+   "local_p95": 0.38641211679787374,
+   "local_runs": [
+    0.39,
+    0.38,
+    0.37,
+    0.37,
+    0.36
+   ]
+  }
+ },
+ "reps": 5,
+ "databricks_cold_first_query_seconds": 7.82,
+ "note": "Databricks timings include the REST round trip from a Mac in Europe; local Spark timings are in-process on warm tables. Local tables come from the local run (same code, slightly different segmentation k)."
+}
