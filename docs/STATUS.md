@@ -7,9 +7,14 @@
 * Docs: platform.md, ab_testing.md, data/model cards, methodology, deploy.
 
 ## Running / pending
-* Nothing is running. Benchmarks (Databricks `sca_benchmark` run 997963992081467 and the local series), SQL latency, `reports/local_vs_databricks.md` and figures are done and committed.
-* Still deployed in the workspace: App `sca-streamlit`, Model Serving endpoint `sca-netflix-score` (scale-to-zero), Genie space, AI/BI dashboard, Lakeflow pipeline `twitch_silver`, jobs `sca_*`, UC tables and feature tables.
-* Optional: re-run the `lakehouse` stage once to refresh the constraint messages ("already present"); run the Lakeflow pipeline on the full table; add a `prod` target.
+* Nothing is running locally or on Databricks. The local benchmark had already finished before the pause request (100% x3 runs at 24 GB, one run at 8 GB; the 4 GB run failed with an out-of-memory error, recorded in `reports/results/benchmark_local_4g.json`); `pmset -g log` shows no sleep/wake event during those runs, so no timing spans a sleep. SQL latency and the benchmark report are also done.
+* Still deployed in the workspace: App `sca-streamlit`, Model Serving endpoint `sca-netflix-score` (scale-to-zero), Genie space, AI/BI dashboard, Lakeflow pipeline `twitch_silver`, jobs `sca_*`.
+
+## Remaining
+1. Push to the private repo `waelsabri11/streaming-content-analytics` (remote `origin` is set, repo is PRIVATE; the push was blocked by the permission classifier and needs Wael's go-ahead in this session).
+2. Continuous deployment to Databricks (GitHub Actions: validate on PR, deploy on push to main, manual `workflow_dispatch` smoke run). Wael creates the Databricks credential (service principal if Free Edition allows, else PAT) and stores it as a GitHub secret himself; record in `docs/platform.md` what Free Edition allowed. Prove it with one real push, the Actions run URL and the deployed job.
+3. Optional: Lakeflow on the full table, a `prod` target, refresh of the `lakehouse` stage messages.
+4. Opus review (leakage, README honesty, licences) before any visibility change. Do not change visibility before the review.
 
 ## Known gaps / honesty list
 * Lakeflow ran on the 100k sample only; dashboard and app not looked at rendered; no `prod` target; serverless quota size unknown (billing rows lag).
