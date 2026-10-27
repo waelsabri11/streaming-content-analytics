@@ -108,3 +108,37 @@ resources:
           spark_python_task:
             python_file: ../jobs/run.py
             parameters: ["optimize-demo", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+
+    sca_benchmark:
+      name: sca-benchmark-${bundle.target}
+      max_concurrent_runs: 1
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "5"
+            dependencies:
+              - ../dist/*.whl
+      tasks:
+        - task_key: p1
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["benchmark", "--pct", "1", "--repeats", "3", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: p10
+          depends_on: [{task_key: p1}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["benchmark", "--pct", "10", "--repeats", "3", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: p50
+          depends_on: [{task_key: p10}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["benchmark", "--pct", "50", "--repeats", "3", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: p100
+          depends_on: [{task_key: p50}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["benchmark", "--pct", "100", "--repeats", "3", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]

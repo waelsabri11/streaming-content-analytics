@@ -1,0 +1,113 @@
+{
+ "1": {
+  "label": "local_24g",
+  "pct": 1,
+  "runs": [
+   {
+    "sessionize_seconds": 11.03,
+    "rows": 4764554,
+    "features_seconds": 5.43,
+    "viewers": 155542,
+    "kmeans_seconds": 3.39,
+    "total_seconds": 19.85,
+    "repeat": 1,
+    "kind": "cold"
+   },
+   {
+    "sessionize_seconds": 6.61,
+    "rows": 4764554,
+    "features_seconds": 4.82,
+    "viewers": 155542,
+    "kmeans_seconds": 1.78,
+    "total_seconds": 13.2,
+    "repeat": 2,
+    "kind": "warm"
+   },
+   {
+    "sessionize_seconds": 6.18,
+    "rows": 4764554,
+    "features_seconds": 4.55,
+    "viewers": 155542,
+    "kmeans_seconds": 1.82,
+    "total_seconds": 12.55,
+    "repeat": 3,
+    "kind": "warm"
+   }
+  ],
+  "session_start_seconds": 4.347828375000972
+ },
+ "10": {
+  "label": "local_24g",
+  "pct": 10,
+  "runs": [
+   {
+    "sessionize_seconds": 18.76,
+    "rows": 47429616,
+    "features_seconds": 31.09,
+    "viewers": 1552616,
+    "kmeans_seconds": 6.01,
+    "total_seconds": 55.85,
+    "repeat": 1,
+    "kind": "cold"
+   },
+   {
+    "sessionize_seconds": 13.97,
+    "rows": 47429616,
+    "features_seconds": 29.75,
+    "viewers": 1552616,
+    "kmeans_seconds": 4.47,
+    "total_seconds": 48.19,
+    "repeat": 2,
+    "kind": "warm"
+   },
+   {
+    "sessionize_seconds": 13.52,
+    "rows": 47429616,
+    "features_seconds": 29.54,
+    "viewers": 1552616,
+    "kmeans_seconds": 4.81,
+    "total_seconds": 47.87,
+    "repeat": 3,
+    "kind": "warm"
+   }
+  ],
+  "session_start_seconds": 4.276858333993005
+ },
+ "50": {
+  "label": "local_24g",
+  "pct": 50,
+  "runs": [
+   {
+    "sessionize_seconds": 57.68,
+    "rows": 237382905,
+    "features_seconds": 149.14,
+    "viewers": 7761233,
+    "kmeans_seconds": 13.34,
+    "total_seconds": 220.15,
+    "repeat": 1,
+    "kind": "cold"
+   },
+   {
+    "sessionize_seconds": 53.64,
+    "rows": 237382905,
+    "features_seconds": 147.91,
+    "viewers": 7761233,
+    "kmeans_seconds": 10.78,
+    "total_seconds": 212.33,
+    "repeat": 2,
+    "kind": "warm"
+   },
+   {
+    "sessionize_seconds": 61.23,
+    "rows": 237382905,
+    "features_seconds": 147.24,
+    "viewers": 7761233,
+    "kmeans_seconds": 10.83,
+    "total_seconds": 219.3,
+    "repeat": 3,
+    "kind": "warm"
+   }
+  ],
+  "session_start_seconds": 4.255764250003267
+ }
+}

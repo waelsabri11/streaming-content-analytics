@@ -273,6 +273,63 @@ def build() -> tuple[str, str]:
         rows = [[sc, f"{sq[sc]['naive_peeking_reject_rate']:.1%}", f"{sq[sc]['msprt_reject_rate']:.1%}", sq[sc]["msprt_median_stop_n_per_arm"]] for sc in ("aa", "ab")]
         out.append(f"\nSequential testing, {sq['looks']} looks up to {sq['n_max_per_arm']:,} viewers per arm, {sq['reps']} repetitions:\n\n" + md_table(rows, ["Scenario", "Naive peeking: reject rate", "mSPRT: reject rate", "mSPRT median stop (viewers/arm)"]) + "\n")
         key.append(f"| A/B simulation: CUPED variance ratio (rho {f(pp['rho'], 2)}) / A/A false positives naive peeking, 10 looks | {f(sm['variance_reduction_se_ratio_squared'], 2)} / {sq['aa']['naive_peeking_reject_rate']:.1%} |")
+    st = load("twitch_streaming")
+    if st:
+        out.append("\n## 9. Structured Streaming replay (simulated live feed)\n")
+        out.append(f"**This is a replay of historical data, not a live source.** {n(st['prepare']['events'])} presence events (2% viewer sample, first week of slots) written as {st['prepare']['chunks']} time-ordered files "
+                   f"and read with `maxFilesPerTrigger=1`, `trigger(availableNow=True)`, watermark 30 min; event time is synthetic ({st['event_time']}).\n")
+        rows = [[k, st[k]["batches"], n(st[k]["input_rows"]), f"{st[k]['wall_seconds']:,.0f} s", f"{st[k]['rows_per_second_overall']:,.0f}", f(st[k]["batch_seconds_p50"], 1), f(st[k]["batch_seconds_p95"], 1), f(st[k]["batch_seconds_p99"], 1), n(st[k]["output_rows"])]
+                for k in ("per_channel", "platform")]
+        out.append("\n" + md_table(rows, ["Query", "Batches", "Input rows", "Wall", "Rows/s overall", "Batch p50 (s)", "Batch p95 (s)", "Batch p99 (s)", "Output windows"]) + "\n")
+        stl = load("twitch_streaming", local=True)
+        if stl and stl is not st:
+            rows = [[k, f"{stl[k]['wall_seconds']:,.0f} s", f"{stl[k]['rows_per_second_overall']:,.0f}", f(stl[k]["batch_seconds_p50"], 1), f(stl[k]["batch_seconds_p95"], 1), n(stl[k]["output_rows"])] for k in ("per_channel", "platform")]
+            out.append("\nSame code on the Mac (`local[*]`):\n\n" + md_table(rows, ["Query", "Wall", "Rows/s overall", "Batch p50 (s)", "Batch p95 (s)", "Output windows"]) + "\n")
+    lh = load("lakehouse")
+    if lh:
+        out.append("\n## 10. Delta Lake and Unity Catalog on Databricks\n")
+        dd = lh.get("delta_demo", {})
+        if "rows_before" in dd:
+            out.append(f"**MERGE / change data feed / time travel / RESTORE** on a deep clone of `silver.netflix_titles`: {n(dd['rows_before'])} rows -> MERGE of 25 corrected + 10 new rows -> {n(dd['rows_after_merge'])} rows "
+                       f"({dd['merge_seconds']} s); a second identical MERGE leaves {n(dd['rows_after_second_merge'])} (idempotent); change data feed returned {dd['change_data_feed']}; "
+                       f"`VERSION AS OF {dd['versions'][0]}` has {n(dd['time_travel_rows_at_v0'])} rows; `RESTORE` brings the table back to {n(dd['rows_after_restore'])} rows.\n")
+        rp = lh.get("reproduce", {})
+        if rp:
+            out.append(f"\n**Reproducing a training snapshot**: the Netflix cohort version recorded with the model (Delta version {rp['version']}) has {n(rp['rows_at_version'])} rows "
+                       f"(logged {n(rp['rows_logged'])}) and the logged checksum of the target {'matches' if rp['y_sum_matches_logged'] else 'does NOT match'}; the table is now at version {rp['current_version']}.\n")
+        gv = lh.get("governance", {})
+        if "comments" in gv:
+            out.append(f"\n**Unity Catalog governance**: {len(gv['comments'])} tables with table and column comments and tags; constraints: " + "; ".join(gv["constraints"]) + ".\n")
+        ft = lh.get("feature_tables", {})
+        if ft and "error" not in ft:
+            out.append("\n**UC feature tables**: " + ", ".join(f"`{k}` ({n(v['rows'])} rows, key {v['primary_keys']})" for k, v in ft.items()) + ".\n")
+        ln = lh.get("lineage", {}).get("edges")
+        if ln:
+            out.append(f"\n**Lineage** (system.access.table_lineage): {len(ln)} table-to-table edges recorded for silver/gold, e.g. " + "; ".join(f"{e['source'].split('.')[-1]} -> {e['target'].split('.')[-1]}" for e in ln[:5]) + ".\n")
+        od = lh.get("optimize_demo")
+        if od:
+            out.append(f"\n**OPTIMIZE / liquid clustering / VACUUM** ({n(od['rows'])} rows, point lookup of {od['lookup_viewers']:,} viewers, median of 5): "
+                       f"before {od['before']['median_s']} s ({od['files_before']} files); after OPTIMIZE compaction {od['after_optimize_compaction']['median_s']} s ({od['files_after_optimize']} files, OPTIMIZE took {od['optimize_compact_seconds']} s); "
+                       f"after liquid clustering by user_id {od['after_liquid_clustering']['median_s']} s ({od['files_after_clustering']} files, {od['optimize_clustering_seconds']} s to cluster); VACUUM {od['vacuum_seconds']} s. "
+                       "Run-to-run spread is as large as the differences: no significant gain is claimed.\n")
+    lf = load("lakeflow_dq_100k")
+    if lf:
+        out.append("\n## 11. Lakeflow Declarative Pipeline (Databricks, 100k-viewer sample)\n")
+        out.append(f"Pipeline `{lf['pipeline_id']}`, update `{lf['update_id']}`, input {lf['input']}. Expectation results (`event_log`):\n\n")
+        rows = []
+        for flow, fv in lf["flows"].items():
+            for e in fv.get("expectations") or []:
+                rows.append([flow, e["name"], n(e["passed_records"]), n(e["failed_records"])])
+        out.append(md_table(rows, ["Flow", "Expectation", "Passed", "Failed"]) + "\n")
+    gn, sv = load("genie"), load("serving_latency")
+    if gn or sv:
+        out.append("\n## 12. Genie, Model Serving, dashboard queries\n")
+        if gn:
+            rows = [[a["question"], a["status"], a["seconds"]] for a in gn["answers"]]
+            out.append("**Genie space** (answers via REST API, SQL generated by Genie saved in `reports/results/databricks/genie.json`):\n\n" + md_table(rows, ["Question", "Status", "Seconds"]) + "\n")
+        if sv:
+            out.append(f"\n**Model Serving** (`{sv['endpoint']}`, CPU, scale-to-zero; {sv['client']}; {sv['requests']} requests, {sv['errors']} errors): first request {f(sv['first_request_seconds'], 2)} s; "
+                       f"p50 {f(sv['p50_s'] * 1000, 0)} ms, p95 {f(sv['p95_s'] * 1000, 0)} ms, p99 {f(sv['p99_s'] * 1000, 0)} ms.\n")
     er = load("earlier_run")
     if er:
         out.append(f"\n## 6. Superseded first segmentation run\n\n{er['note']} Single-seed KMeans chose k = {er['k_chosen']} with bootstrap ARI {er['k5_bootstrap_ari_mean']}; "

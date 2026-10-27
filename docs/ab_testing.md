@@ -1,6 +1,6 @@
 # Measuring the effect of promoting a content: A/B test design (simulated)
 
-**No experiment was run.** Everything numeric below comes from `reports/results/ab_simulation.json` (section 8 of
+**No experiment was run.** Everything numeric below comes from `reports/results/databricks/ab_simulation.json` (computed on Databricks; a local run of the same code gives slightly different simulation numbers because the random viewer sample differs; section 8 of
 [`reports/results.md`](../reports/results.md)): the *variance structure* is real (Twitch viewers), the *treatment effect is injected
 synthetically*. Twitch is a proxy for a subscription service, so the absolute numbers (hours per viewer) do not transfer; the method does.
 
@@ -15,7 +15,7 @@ synthetically*. Twitch is a proxy for a subscription service, so the absolute nu
 
 ## CUPED (variance reduction with pre-period behaviour)
 Adjusted outcome `y* = y - theta (x - mean(x))` with `x` = the same viewer's pre-period hours (weeks 0-2) and `theta = cov(x, y) / var(x)` estimated on the pooled sample (randomisation makes the adjustment unbiased).
-The variance falls by about `rho^2` where `rho` is the pre/post correlation: here rho = 0.715, so the variance of the estimator drops to 48.9% of the unadjusted one in the simulation (standard error 0.031 vs 0.044 hours at 20,000 viewers per arm).
+The variance falls by about `rho^2` where `rho` is the pre/post correlation: here rho = 0.715, so the variance of the estimator drops to 49.1% of the unadjusted one in the simulation (standard error 0.031 vs 0.044 hours at 20,000 viewers per arm).
 In practice this halves the required sample size: for a 2% relative effect, 92,792 viewers per arm unadjusted vs 45,408 with CUPED.
 
 ## Power and minimum detectable effect (from the real Twitch variance)
@@ -24,18 +24,18 @@ Weekly hours per viewer: mean 2.88, standard deviation 4.43 (14.2M viewers activ
 | viewers per arm | naive | CUPED |
 |---|---|---|
 | 10,000 | 6.1% | 4.3% |
-| 100,000 | 1.9% | 1.3% |
+| 100,000 | 1.9% | 1.4% |
 | 500,000 | 0.86% | 0.60% |
 
 ## Simulated A/A and A/B (clearly synthetic)
 400 repetitions each, 20,000 viewers per arm resampled from the real viewers, treatment effect +3% of post-period hours injected in the A/B arm.
-* **A/A** (no effect): false positive rate 4.75% naive, 5.75% CUPED (400 repetitions, so about +-1 point of noise): the test is calibrated either way.
-* **A/B**: power 48.5% naive vs 79.5% CUPED at the same sample size; both estimators are centred on the injected effect; 95% interval coverage 96.0% and 93.8%.
+* **A/A** (no effect): false positive rate 6.00% naive, 5.75% CUPED (400 repetitions, so about +-1 point of noise): the test is calibrated either way.
+* **A/B**: power 46.8% naive vs 79.5% CUPED at the same sample size; both estimators are centred on the injected effect; 95% interval coverage 93.8% (naive) and 96.8% (CUPED).
 
 ## Sequential testing
 Looking at a fixed-horizon p-value repeatedly inflates the false positive rate. Simulation with 10 equally spaced looks (up to 40,000 viewers per arm, CUPED outcome), 300 repetitions:
-* naive peeking (stop at the first p < 0.05): **19.3% false positives under no effect**;
-* mixture SPRT (always-valid p-value, normal prior with standard deviation 2% of the mean): 0.7% false positives under no effect (conservative), 82% power for the +3% effect, median stopping point 24,000 viewers per arm.
+* naive peeking (stop at the first p < 0.05): **17.0% false positives under no effect**;
+* mixture SPRT (always-valid p-value, normal prior with standard deviation 2% of the mean): 0.7% false positives under no effect (conservative), 86% power for the +3% effect, median stopping point 24,000 viewers per arm.
 mSPRT is valid under continuous monitoring but conservative; a group-sequential design (alpha spending, e.g. O'Brien-Fleming boundaries) with pre-planned looks is the standard alternative and would recover some power.
 
 ## Not covered

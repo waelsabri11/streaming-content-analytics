@@ -63,8 +63,9 @@ def governance(spark) -> dict:
         try:
             spark.sql(f"ALTER TABLE {t} ADD CONSTRAINT {cname} CHECK ({expr})")
             done["constraints"].append(f"{t}.{cname}: {expr}")
-        except Exception as e:  # noqa: BLE001 - already present or violated by data: record, do not hide
-            done["constraints"].append(f"{t}.{cname}: NOT ADDED ({str(e)[:120]})")
+        except Exception as e:  # noqa: BLE001 - violated by data or other: record, do not hide
+            msg = str(e)
+            done["constraints"].append(f"{t}.{cname}: {expr} (already present)" if "ALREADY_EXISTS" in msg else f"{t}.{cname}: NOT ADDED ({msg[:120]})")
     for name in ("netflix_cohort", "twitch_viewer_features", "twitch_viewer_segments"):
         t = T("gold", name)
         if _exists(spark, t):

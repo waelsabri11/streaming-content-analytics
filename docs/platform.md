@@ -21,4 +21,22 @@ Docs-stated limits (Databricks "Free Edition limitations", page updated 2026-10-
 up to 3 Apps (auto-stopped after 24 h); limited serverless notebook size and usage; outbound internet restricted to trusted domains; compute stops for the rest of the day when the daily quota is exceeded.
 The quota size itself is not published; compute actually used is reported in the benchmark section once the runs have happened.
 
-Observed startup of the probe job: see `reports/results/platform_probe_*.json` run ids and `reports/local_vs_databricks.md`.
+
+
+## What was built on top (all created and run in this workspace, 2026-10-27)
+
+| Item | Result |
+|---|---|
+| Upload of raw data | `databricks fs cp` of the single 6.9 GB gzip to a UC volume **failed** (`unexpected EOF` on the single PUT). Re-splitting the data into 24 gzip parts (8.7 GB total) and uploading 4 at a time worked (about 2 h for the whole set, throughput about 1-4 MB/s over a home connection). Parts load in parallel on serverless (bronze 140 s) whereas one gzip is a single task. |
+| Jobs | `sca_twitch` DAG (bronze -> silver -> features -> segments / churn / A/B / life curves / streaming / OPTIMIZE demo), `sca_netflix`, `sca_lakehouse`, `sca_benchmark`: all ran. `max_concurrent_runs: 1` queued a second run of the same job for 30 minutes (setup_duration 1,895 s in the API); the platform also reports "reached maximum number of allowed active runs (5)" for tasks. |
+| Lakeflow Declarative Pipeline | Ran on the 100k-viewer sample via Auto Loader. First two updates failed (an expectation referenced a column dropped by the upstream select; a streaming table cannot host a batch `dropDuplicates` read, so `twitch_views` is a materialized view). Not run on the full table. |
+| Structured Streaming | `availableNow` micro-batches from a file source with watermark into a Delta sink worked; Spark Connect returns progress fields (`batchDuration`, `numInputRows`). A stale checkpoint from a crashed earlier attempt made a rerun write nothing: the code now clears checkpoints before a replay. |
+| Delta | MERGE, CDF, time travel, RESTORE, CHECK constraints, `CLUSTER BY`, OPTIMIZE, VACUUM all worked (results section 10). |
+| Unity Catalog | comments, tags, constraints, feature tables (`databricks-feature-engineering` in the job environment), lineage readable from `system.access.table_lineage`. The built-in lineage UI screenshot was not taken (no browser session on the workspace); the edges are in the results file instead. |
+| MLflow + registry | UC registry works (`workspace.gold.netflix_performance_score`, aliases `champion` / `challenger`). A raw LightGBM flavor model failed at serving time (`train and valid dataset categorical_feature do not match`: JSON input has no pandas categoricals); a pyfunc wrapper fixes it (`netflix/serving_model.py`). |
+| Model Serving | CPU endpoint with scale-to-zero created without error on Free Edition and answered 100/100 requests (p50 148 ms). |
+| SQL warehouse | Serverless starter warehouse (2X-Small, auto-stops): cold first query about 10-18 s, warm dashboard queries 1.5-3 s via the REST API. |
+| AI/BI dashboard | Created and published through the Lakeview API from six dataset queries (`jobs/create_dashboard.py`); all six queries return rows; I did not open the rendered dashboard. |
+| Genie | Space created from a serialized payload; 5 questions answered in 17-20 s each, SQL stored in `reports/results/databricks/genie.json`. |
+| Databricks Apps | `sca-streamlit` deployed (state RUNNING, compute ACTIVE); the CLI could not fetch app logs in this session; the app needs a workspace login, so I did not load its pages. |
+| System tables | `system.billing.usage` and `system.access.table_lineage` are readable. Billing rows for today's compute were not yet present when queried (usage lands with a delay), so compute used is not reported; no quota error occurred. |

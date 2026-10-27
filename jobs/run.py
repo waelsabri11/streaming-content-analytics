@@ -15,10 +15,13 @@ if "__file__" in globals():  # local runs; on Databricks the wheel provides the 
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("stage", choices=["netflix", "twitch-bronze", "twitch-silver", "twitch-features",
-                                     "twitch-segments", "twitch-lifecurves", "twitch-tuning", "twitch-churn", "twitch-abtest", "twitch-streaming", "lakehouse", "optimize-demo", "export-app-data"])
+                                     "twitch-segments", "twitch-lifecurves", "twitch-tuning", "twitch-churn", "twitch-abtest", "twitch-streaming", "lakehouse", "optimize-demo", "export-app-data", "benchmark"])
     p.add_argument("--catalog", default="")
     p.add_argument("--raw-root", default=None)
     p.add_argument("--results-dir", default=None)
+    p.add_argument("--pct", type=int, default=100)
+    p.add_argument("--repeats", type=int, default=3)
+    p.add_argument("--driver-mem", default="24g")
     a = p.parse_args()
     if a.catalog:
         os.environ["SCA_CATALOG"] = a.catalog
@@ -27,10 +30,15 @@ def main() -> None:
     if a.results_dir:
         os.environ["SCA_RESULTS_DIR"] = a.results_dir
 
+    import time
+
     from streaming_content import config
     from streaming_content.spark import get_spark
 
-    spark = get_spark(a.stage)
+    t_start = time.perf_counter()
+    spark = get_spark(a.stage, driver_mem=a.driver_mem) if a.stage == "benchmark" else get_spark(a.stage)
+    spark.range(1).count()  # first action = session ready
+    session_seconds = time.perf_counter() - t_start
     if a.stage == "netflix":
         from streaming_content.netflix import pipeline
 
@@ -66,6 +74,11 @@ def main() -> None:
         from streaming_content import lakehouse
 
         lakehouse.run(spark)
+    elif a.stage == "benchmark":
+        from streaming_content import benchmark
+        from streaming_content.spark import on_databricks
+
+        benchmark.run(spark, a.pct, a.repeats, label="databricks" if on_databricks() else f"local_{a.driver_mem}", session_start_seconds=session_seconds)
     elif a.stage == "export-app-data":
         from streaming_content import app_export
 
