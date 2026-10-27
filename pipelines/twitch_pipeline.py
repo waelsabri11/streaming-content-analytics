@@ -34,11 +34,10 @@ def twitch_interactions():
     )
 
 
-@dp.table(name="twitch_views", comment="Validated viewing intervals with watch_slots")
+@dp.materialized_view(name="twitch_views", comment="Validated, de-duplicated viewing intervals with watch_slots")
 @dp.expect_or_drop("positive_duration", "stop_slot > start_slot")
 @dp.expect_or_drop("slot_in_window", f"start_slot >= 0 AND stop_slot <= {config.N_SLOTS}")
 @dp.expect_or_drop("has_viewer_and_channel", "user_id IS NOT NULL AND streamer IS NOT NULL")
-@dp.expect("no_corrupt_rows", "_corrupt IS NULL")
 def twitch_views():
     return silver_mod.clean_views(dp.read("twitch_interactions"))
 

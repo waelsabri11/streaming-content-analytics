@@ -3,7 +3,7 @@ resources:
     twitch_silver:
       name: twitch-silver-${bundle.target}
       catalog: ${var.catalog}
-      schema: silver
+      schema: lakeflow
       serverless: true
       channel: CURRENT
       configuration:

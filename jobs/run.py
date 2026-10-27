@@ -15,7 +15,7 @@ if "__file__" in globals():  # local runs; on Databricks the wheel provides the 
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("stage", choices=["netflix", "twitch-bronze", "twitch-silver", "twitch-features",
-                                     "twitch-segments", "twitch-lifecurves", "twitch-tuning", "twitch-churn", "twitch-abtest"])
+                                     "twitch-segments", "twitch-lifecurves", "twitch-tuning", "twitch-churn", "twitch-abtest", "twitch-streaming"])
     p.add_argument("--catalog", default="")
     p.add_argument("--raw-root", default=None)
     p.add_argument("--results-dir", default=None)
@@ -62,6 +62,10 @@ def main() -> None:
         from streaming_content.twitch import churn
 
         churn.run(spark)
+    elif a.stage == "twitch-streaming":
+        from streaming_content.twitch import streaming
+
+        streaming.run(spark)
     elif a.stage == "twitch-abtest":
         from streaming_content.twitch import abtest
 

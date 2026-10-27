@@ -1,0 +1,34 @@
+{
+  "replay": true,
+  "event_time": "synthetic: 2018-01-01 + slot*10min",
+  "per_channel": {
+    "wall_seconds": 34.21,
+    "batches": 29,
+    "input_rows": 4162135,
+    "rows_per_second_overall": 121676.24804335332,
+    "batch_seconds_p50": 1.1055000000000001,
+    "batch_seconds_p95": 1.6247999999999998,
+    "batch_seconds_p99": 1.8945500000000002,
+    "output_rows": 1461236
+  },
+  "platform": {
+    "wall_seconds": 28.71,
+    "batches": 29,
+    "input_rows": 4162135,
+    "rows_per_second_overall": 144948.50851229063,
+    "batch_seconds_p50": 0.9484999999999999,
+    "batch_seconds_p95": 1.28935,
+    "batch_seconds_p99": 1.32606,
+    "output_rows": 1004
+  },
+  "prepare": {
+    "events": 4162135,
+    "chunks": 28,
+    "write_seconds": 6.5,
+    "viewer_pct": 2,
+    "slots": [
+      0,
+      1008
+    ]
+  }
+}

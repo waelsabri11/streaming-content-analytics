@@ -1,0 +1,51 @@
+{
+ "pipeline_id": "e1b748db-4f05-459a-9309-01e33075f4eb",
+ "update_id": "4130141e-7467-4874-b202-f0bce2cd7bfc",
+ "input": "100k_a.csv (3,051,733 rows) via Auto Loader, serverless pipeline",
+ "flows": {
+  "twitch_interactions": {
+   "output_rows": null,
+   "expectations": null
+  },
+  "twitch_views": {
+   "output_rows": 3051733,
+   "expectations": [
+    {
+     "name": "positive_duration",
+     "dataset": "workspace.lakeflow.twitch_views",
+     "passed_records": 3051733,
+     "failed_records": 0
+    },
+    {
+     "name": "has_viewer_and_channel",
+     "dataset": "workspace.lakeflow.twitch_views",
+     "passed_records": 3051733,
+     "failed_records": 0
+    },
+    {
+     "name": "slot_in_window",
+     "dataset": "workspace.lakeflow.twitch_views",
+     "passed_records": 3051733,
+     "failed_records": 0
+    }
+   ]
+  },
+  "twitch_view_sessions": {
+   "output_rows": 3051733,
+   "expectations": [
+    {
+     "name": "session_ids_positive",
+     "dataset": "workspace.lakeflow.twitch_view_sessions",
+     "passed_records": 3051733,
+     "failed_records": 0
+    },
+    {
+     "name": "new_watch_not_above_raw",
+     "dataset": "workspace.lakeflow.twitch_view_sessions",
+     "passed_records": 3051733,
+     "failed_records": 0
+    }
+   ]
+  }
+ }
+}
