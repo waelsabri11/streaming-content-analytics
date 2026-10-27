@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import platform
+import statistics
 import sys
 from pathlib import Path
 
@@ -101,7 +102,7 @@ def build() -> tuple[str, str]:
     if "silver_streamer_dim" in T:
         key.append(f"| Channels | {n(T['silver_streamer_dim']['streamers'])} |")
     if "silver_sessionize" in T:
-        key.append(f"| Sessionization wall time, full 474M rows (local[*]) | {T['silver_sessionize']['seconds']:,.0f} s |")
+        key.append(f"| Sessionization wall time, full 474M rows (Databricks serverless) | {T['silver_sessionize']['seconds']:,.0f} s |")
 
     # ---------------- tuning
     if tu:
@@ -332,10 +333,9 @@ def build() -> tuple[str, str]:
                        f"p50 {f(sv['p50_s'] * 1000, 0)} ms, p95 {f(sv['p95_s'] * 1000, 0)} ms, p99 {f(sv['p99_s'] * 1000, 0)} ms.\n")
     bd, bl = load("benchmark_databricks"), load("benchmark_local_24g", local=True)
     if bd and bl and "100" in bd and "100" in bl:
-        w = lambda d: sorted(r["total_seconds"] for r in d["100"]["runs"] if r["kind"] == "warm")[0]  # noqa: E731
-        key.append(f"| Benchmark, 100% of data (474.7M rows): sessionize + features + KMeans, warm: Databricks serverless / Mac (24 GB heap) | {w(bd):.0f} s / {w(bl):.0f} s |")
-        c1 = bd["1"]["runs"][1]["total_seconds"], bl["1"]["runs"][1]["total_seconds"]
-        key.append(f"| Benchmark, 1% of data, warm: Databricks / Mac | {c1[0]:.0f} s / {c1[1]:.0f} s |")
+        w = lambda d, pct: statistics.median(r["total_seconds"] for r in d[pct]["runs"] if r["kind"] == "warm")  # noqa: E731
+        key.append(f"| Benchmark, 100% of data (474.7M rows): sessionize + features + KMeans, warm median: Databricks serverless / Mac (24 GB heap) | {w(bd, '100'):.0f} s / {w(bl, '100'):.0f} s |")
+        key.append(f"| Benchmark, 1% of data, warm median: Databricks / Mac | {w(bd, '1'):.0f} s / {w(bl, '1'):.0f} s |")
     er = load("earlier_run")
     if er:
         out.append(f"\n## 6. Superseded first segmentation run\n\n{er['note']} Single-seed KMeans chose k = {er['k_chosen']} with bootstrap ARI {er['k5_bootstrap_ari_mean']}; "

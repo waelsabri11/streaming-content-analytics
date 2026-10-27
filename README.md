@@ -26,7 +26,7 @@ All values come from [`reports/results.md`](reports/results.md), generated from 
 | Viewer sessions (gap rule 3 slots = 30 min) | 349,257,238 |
 | Viewers segmented | 15,524,309 |
 | Channels | 790,100 |
-| Sessionization wall time, full 474M rows (local[*]) | 95 s |
+| Sessionization wall time, full 474M rows (Databricks serverless) | 95 s |
 | Chosen k (bootstrap ARI 0.964, silhouette 0.244) | 7 |
 | Viewers staying in the same segment first half -> second half | 42.5% |
 | eta^2 (H2 log hours): segments / hours in equal-size groups | 0.387 / 0.473 |
@@ -43,8 +43,8 @@ All values come from [`reports/results.md`](reports/results.md), generated from 
 | Re-engagement model, test (n=2,910,491): ROC-AUC GBT / logistic regression | 0.799 / 0.785 |
 | Re-engagement model: churn lift in riskiest decile, GBT | 2.51x |
 | A/B simulation: CUPED variance ratio (rho 0.71) / A/A false positives naive peeking, 10 looks | 0.49 / 17.0% |
-| Benchmark, 100% of data (474.7M rows): sessionize + features + KMeans, warm: Databricks serverless / Mac (24 GB heap) | 428 s / 498 s |
-| Benchmark, 1% of data, warm: Databricks / Mac | 23 s / 13 s |
+| Benchmark, 100% of data (474.7M rows): sessionize + features + KMeans, warm median: Databricks serverless / Mac (24 GB heap) | 454 s / 515 s |
+| Benchmark, 1% of data, warm median: Databricks / Mac | 23 s / 13 s |
 <!-- KEY-NUMBERS:END -->
 
 ## What the results say (including what did not work)
@@ -86,7 +86,7 @@ Full detail in [docs/platform.md](docs/platform.md) and results sections 9-12. S
 * **MLflow / UC registry / Model Serving**: LightGBM wrapped as a pyfunc (rebuilds pandas categoricals), registered in UC, `champion` / `challenger` aliases set by a promote rule, served from a scale-to-zero CPU endpoint (p50 148 ms, p95 217 ms from a Mac in Europe).
 * **AI/BI dashboard, Genie space, Databricks App**: created via API/CLI; Genie answered 5 questions in about 17-20 s each; the App is running ([url](https://sca-streamlit-7474651698760159.aws.databricksapps.com), needs workspace sign-in).
 * **Jobs / Asset Bundles**: `databricks bundle validate/deploy/run` against the real workspace; jobs `sca_twitch` (bronze -> silver -> features -> segments / churn / A/B / life curves / streaming / OPTIMIZE demo), `sca_netflix`, `sca_lakehouse`, `sca_benchmark`.
-* **Local vs Databricks benchmark** ([reports/local_vs_databricks.md](reports/local_vs_databricks.md); sessionize + features + KMeans on 1/10/50/100% of the data, 3 runs each): the Mac is faster at 1% (13 s vs 23 s warm), they tie at 10%, serverless is faster from 50% (191 s vs 216 s) and at 100% (454 s vs 515 s); MLlib KMeans is slower on serverless (132 s vs 22 s at 100%). With a 8 GB heap the Mac needs 595 s at 100%; with 4 GB it fails with a Spark out-of-memory error. Dashboard queries: warehouse about 1.1-1.3 s vs 0.1-0.4 s for local Spark (the warehouse figure includes the REST round trip). It describes this Free Edition environment vs one workstation, not paid clusters.
+* **Local vs Databricks benchmark** ([reports/local_vs_databricks.md](reports/local_vs_databricks.md); sessionize + features + KMeans on 1/10/50/100% of the data, 3 runs each): the Mac is faster at 1% (13 s vs 23 s warm), they tie at 10%, serverless is faster from 50% (191 s vs 216 s) and at 100% (454 s vs 515 s); MLlib KMeans is slower on serverless (166 s vs 22 s at 100%, warm medians). With a 8 GB heap the Mac needs 595 s at 100%; with 4 GB it fails with a Spark out-of-memory error. Dashboard queries: warehouse about 1.1-1.3 s vs 0.1-0.4 s for local Spark (the warehouse figure includes the REST round trip). It describes this Free Edition environment vs one workstation, not paid clusters.
 
 ## Architecture
 
