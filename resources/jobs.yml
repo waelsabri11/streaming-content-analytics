@@ -142,3 +142,19 @@ resources:
           spark_python_task:
             python_file: ../jobs/run.py
             parameters: ["benchmark", "--pct", "100", "--repeats", "3", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+
+    sca_smoke:
+      name: sca-smoke-${bundle.target}
+      max_concurrent_runs: 1
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "5"
+            dependencies:
+              - ../dist/*.whl
+      tasks:
+        - task_key: smoke
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["smoke", "--catalog", "${var.catalog}", "--raw-root", "/Volumes/${var.catalog}/bronze/raw", "--results-dir", "/Volumes/${var.catalog}/gold/results"]

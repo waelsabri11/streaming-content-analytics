@@ -23,3 +23,10 @@ targets:
     default: true
     workspace:
       host: https://dbc-0d8ed9ac-0478.cloud.databricks.com   # workspace URL, not a secret
+
+  prod:
+    # "prod-like" target for continuous deployment (Free Edition has one workspace): deployed by GitHub Actions on push to main.
+    mode: production
+    workspace:
+      host: https://dbc-0d8ed9ac-0478.cloud.databricks.com
+      root_path: /Workspace/Users/waelsabri4@gmail.com/.bundle/${bundle.name}/prod

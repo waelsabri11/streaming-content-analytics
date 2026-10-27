@@ -2,6 +2,12 @@ name: ci
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      run_smoke:
+        description: Also run the smoke job (100k-viewer sample) after deploying
+        type: boolean
+        default: true
 
 jobs:
   tests:
@@ -22,15 +28,42 @@ jobs:
       # README numbers must match the committed result files
       - run: uv run python reports/make_results.py --check
 
-  bundle:
+  # Continuous deployment to Databricks. Credentials are created by the owner in the Databricks UI and stored as
+  # GitHub secrets: DATABRICKS_HOST plus either DATABRICKS_TOKEN (PAT) or DATABRICKS_CLIENT_ID + DATABRICKS_CLIENT_SECRET
+  # (service principal, OAuth M2M). Pull requests only validate; pushes to main deploy after the tests pass.
+  databricks:
+    needs: tests
     runs-on: ubuntu-latest
-    # `databricks bundle validate` resolves the workspace, so it needs real credentials.
-    # It only runs when the repository has them configured as secrets.
-    if: ${{ vars.DATABRICKS_VALIDATE == 'true' }}
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
     steps:
       - uses: actions/checkout@v4
+      - name: Check credentials
+        id: creds
+        run: |
+          if [ -n "$DATABRICKS_HOST" ] && { [ -n "$DATABRICKS_TOKEN" ] || [ -n "$DATABRICKS_CLIENT_ID" ]; }; then echo "have=true" >> "$GITHUB_OUTPUT"; else echo "have=false" >> "$GITHUB_OUTPUT"; echo "No Databricks credentials configured: skipping validate/deploy"; fi
+      - uses: astral-sh/setup-uv@v5
+        if: steps.creds.outputs.have == 'true'
       - uses: databricks/setup-cli@main
-      - run: databricks bundle validate -t dev
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        if: steps.creds.outputs.have == 'true'
+      - name: Validate bundle
+        if: steps.creds.outputs.have == 'true'
+        run: databricks bundle validate -t prod
+      - name: Deploy bundle (push to main or manual run)
+        if: steps.creds.outputs.have == 'true' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+        run: databricks bundle deploy -t prod
+      - name: Smoke run on the 100k-viewer sample (manual run with run_smoke = true)
+        if: steps.creds.outputs.have == 'true' && github.event_name == 'workflow_dispatch' && inputs.run_smoke
+        run: databricks bundle run sca_smoke -t prod | tee smoke.log
+      - name: Summary
+        if: always() && steps.creds.outputs.have == 'true'
+        run: |
+          {
+            echo "### Databricks CD"
+            echo "- event: ${{ github.event_name }}, commit: ${{ github.sha }}"
+            databricks bundle summary -t prod 2>/dev/null | head -30 || true
+            if [ -f smoke.log ]; then echo "- smoke run output:"; tail -5 smoke.log; fi
+          } >> "$GITHUB_STEP_SUMMARY"
