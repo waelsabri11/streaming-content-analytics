@@ -1,0 +1,740 @@
+{
+  "features": [
+    "log_hours",
+    "log_sessions",
+    "mean_session_min",
+    "log_active_days",
+    "sessions_per_active_day",
+    "share_night",
+    "share_morning",
+    "share_afternoon",
+    "share_evening",
+    "share_peak_days",
+    "log_streamers",
+    "norm_entropy",
+    "top1_share",
+    "repeat_share",
+    "loyalty_days_share"
+  ],
+  "k_candidates": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "ari_floor": 0.8,
+  "n_viewers": 15524309,
+  "k_sweep": [
+    {
+      "k": 4,
+      "silhouette": 0.21468644950997767,
+      "bootstrap_ari_mean": 0.5602079513482777,
+      "bootstrap_ari_min": 0.34882099045289683,
+      "n_sample": 310948
+    },
+    {
+      "k": 5,
+      "silhouette": 0.21674496248735564,
+      "bootstrap_ari_mean": 0.8315415039622623,
+      "bootstrap_ari_min": 0.7624012514771373,
+      "n_sample": 310948
+    },
+    {
+      "k": 6,
+      "silhouette": 0.23267448244318814,
+      "bootstrap_ari_mean": 0.7562605682745356,
+      "bootstrap_ari_min": 0.6407994920963366,
+      "n_sample": 310510
+    },
+    {
+      "k": 7,
+      "silhouette": 0.24396592106521886,
+      "bootstrap_ari_mean": 0.9644568097177305,
+      "bootstrap_ari_min": 0.9547377313366687,
+      "n_sample": 310510
+    },
+    {
+      "k": 8,
+      "silhouette": 0.2505276813521325,
+      "bootstrap_ari_mean": 0.7282876207337378,
+      "bootstrap_ari_min": 0.6393270974577809,
+      "n_sample": 310486
+    },
+    {
+      "k": 9,
+      "silhouette": 0.21847046019858005,
+      "bootstrap_ari_mean": 0.7296336979684499,
+      "bootstrap_ari_min": 0.6022284795143032,
+      "n_sample": 310486
+    },
+    {
+      "k": 10,
+      "silhouette": 0.21692043906840475,
+      "bootstrap_ari_mean": 0.9519401201590965,
+      "bootstrap_ari_min": 0.9421284465615958,
+      "n_sample": 310486
+    }
+  ],
+  "k": 7,
+  "kmeans_seed_stability": {
+    "k": 7,
+    "n": 310163,
+    "restarts_per_model": 3,
+    "ari_pairwise_mean": 0.8478614554019216,
+    "ari_pairwise_min": 0.6986074102714237
+  },
+  "diurnal_watch_share_by_clock_hour": [
+    0.0481,
+    0.0521,
+    0.0483,
+    0.042,
+    0.0377,
+    0.0341,
+    0.0335,
+    0.0314,
+    0.0281,
+    0.0287,
+    0.0289,
+    0.0292,
+    0.0322,
+    0.0359,
+    0.039,
+    0.0418,
+    0.0445,
+    0.0464,
+    0.0545,
+    0.0537,
+    0.0563,
+    0.0565,
+    0.0506,
+    0.0466
+  ],
+  "profile": [
+    {
+      "segment": 0,
+      "n_viewers": 1328498,
+      "total_hours": 10623401.5,
+      "log_hours": 1.8345,
+      "log_sessions": 2.0842,
+      "mean_session_min": 51.847,
+      "log_active_days": 2.0152,
+      "sessions_per_active_day": 1.0911,
+      "share_night": 0.25,
+      "share_morning": 0.1206,
+      "share_afternoon": 0.2257,
+      "share_evening": 0.4037,
+      "share_peak_days": 0.316,
+      "log_streamers": 1.2622,
+      "norm_entropy": 0.2984,
+      "top1_share": 0.8939,
+      "repeat_share": 0.833,
+      "loyalty_days_share": 0.8346,
+      "hours": 7.9966,
+      "n_sessions": 8.6112,
+      "active_days": 7.805,
+      "n_streamers": 2.9795,
+      "viewer_share": 0.0856,
+      "hours_share": 0.0443,
+      "name": "Light single-channel viewers"
+    },
+    {
+      "segment": 1,
+      "n_viewers": 3783805,
+      "total_hours": 54732300.6667,
+      "log_hours": 2.5957,
+      "log_sessions": 3.1612,
+      "mean_session_min": 37.7344,
+      "log_active_days": 2.8981,
+      "sessions_per_active_day": 1.3322,
+      "share_night": 0.2503,
+      "share_morning": 0.1126,
+      "share_afternoon": 0.2236,
+      "share_evening": 0.4135,
+      "share_peak_days": 0.2958,
+      "log_streamers": 2.6969,
+      "norm_entropy": 0.7931,
+      "top1_share": 0.3243,
+      "repeat_share": 0.7124,
+      "loyalty_days_share": 0.3433,
+      "hours": 14.4649,
+      "n_sessions": 24.0362,
+      "active_days": 18.0046,
+      "n_streamers": 14.8417,
+      "viewer_share": 0.2437,
+      "hours_share": 0.2281,
+      "name": "Regular viewers"
+    },
+    {
+      "segment": 2,
+      "n_viewers": 1590942,
+      "total_hours": 7479196.6667,
+      "log_hours": 1.5379,
+      "log_sessions": 2.1401,
+      "mean_session_min": 33.2224,
+      "log_active_days": 2.0072,
+      "sessions_per_active_day": 1.1884,
+      "share_night": 0.0742,
+      "share_morning": 0.0915,
+      "share_afternoon": 0.6444,
+      "share_evening": 0.1899,
+      "share_peak_days": 0.3063,
+      "log_streamers": 1.9212,
+      "norm_entropy": 0.8112,
+      "top1_share": 0.4594,
+      "repeat_share": 0.511,
+      "loyalty_days_share": 0.4576,
+      "hours": 4.7011,
+      "n_sessions": 8.558,
+      "active_days": 7.2938,
+      "n_streamers": 6.4348,
+      "viewer_share": 0.1025,
+      "hours_share": 0.0312,
+      "name": "Light clock 12-18h viewers"
+    },
+    {
+      "segment": 3,
+      "n_viewers": 3191228,
+      "total_hours": 143226023.5,
+      "log_hours": 3.6703,
+      "log_sessions": 4.0238,
+      "mean_session_min": 47.4992,
+      "log_active_days": 3.4253,
+      "sessions_per_active_day": 1.8915,
+      "share_night": 0.266,
+      "share_morning": 0.2011,
+      "share_afternoon": 0.2426,
+      "share_evening": 0.2903,
+      "share_peak_days": 0.3078,
+      "log_streamers": 3.5114,
+      "norm_entropy": 0.8105,
+      "top1_share": 0.2058,
+      "repeat_share": 0.7821,
+      "loyalty_days_share": 0.3024,
+      "hours": 44.8812,
+      "n_sessions": 58.8165,
+      "active_days": 30.7729,
+      "n_streamers": 35.3299,
+      "viewer_share": 0.2056,
+      "hours_share": 0.5968,
+      "name": "Heavy viewers"
+    },
+    {
+      "segment": 4,
+      "n_viewers": 2028772,
+      "total_hours": 8961730.0,
+      "log_hours": 1.5086,
+      "log_sessions": 2.1196,
+      "mean_session_min": 32.6693,
+      "log_active_days": 1.9935,
+      "sessions_per_active_day": 1.1777,
+      "share_night": 0.6649,
+      "share_morning": 0.0886,
+      "share_afternoon": 0.0733,
+      "share_evening": 0.1733,
+      "share_peak_days": 0.2807,
+      "log_streamers": 1.9919,
+      "norm_entropy": 0.8332,
+      "top1_share": 0.4217,
+      "repeat_share": 0.4454,
+      "loyalty_days_share": 0.4218,
+      "hours": 4.4173,
+      "n_sessions": 8.2857,
+      "active_days": 7.1038,
+      "n_streamers": 7.0003,
+      "viewer_share": 0.1307,
+      "hours_share": 0.0373,
+      "name": "Light clock 00-06h viewers"
+    },
+    {
+      "segment": 5,
+      "n_viewers": 2168521,
+      "total_hours": 6734590.5,
+      "log_hours": 1.2938,
+      "log_sessions": 1.9872,
+      "mean_session_min": 28.214,
+      "log_active_days": 1.8798,
+      "sessions_per_active_day": 1.1544,
+      "share_night": 0.1296,
+      "share_morning": 0.0529,
+      "share_afternoon": 0.1329,
+      "share_evening": 0.6846,
+      "share_peak_days": 0.2584,
+      "log_streamers": 1.8643,
+      "norm_entropy": 0.8506,
+      "top1_share": 0.4334,
+      "repeat_share": 0.4198,
+      "loyalty_days_share": 0.4379,
+      "hours": 3.1056,
+      "n_sessions": 6.8969,
+      "active_days": 6.0597,
+      "n_streamers": 5.8938,
+      "viewer_share": 0.1397,
+      "hours_share": 0.0281,
+      "name": "Light clock 18-24h viewers"
+    },
+    {
+      "segment": 6,
+      "n_viewers": 1432543,
+      "total_hours": 8222462.1667,
+      "log_hours": 1.6611,
+      "log_sessions": 2.2197,
+      "mean_session_min": 35.7997,
+      "log_active_days": 2.0677,
+      "sessions_per_active_day": 1.2141,
+      "share_night": 0.1877,
+      "share_morning": 0.5718,
+      "share_afternoon": 0.118,
+      "share_evening": 0.1224,
+      "share_peak_days": 0.2938,
+      "log_streamers": 2.0932,
+      "norm_entropy": 0.8256,
+      "top1_share": 0.4074,
+      "repeat_share": 0.4404,
+      "loyalty_days_share": 0.4101,
+      "hours": 5.7398,
+      "n_sessions": 9.6269,
+      "active_days": 7.9819,
+      "n_streamers": 8.0603,
+      "viewer_share": 0.0923,
+      "hours_share": 0.0343,
+      "name": "Light clock 06-12h viewers"
+    }
+  ],
+  "time_halves": {
+    "viewers_active_in_both_halves": 13313128,
+    "ari_model_h1_vs_model_h2_on_h2_features": 0.550159229084585,
+    "ari_same_model_h1_features_vs_h2_features": 0.17203809051797492,
+    "share_viewers_same_segment_h1_to_h2": 0.4249245556716648
+  },
+  "predictive_validity": {
+    "n_sample": 711827,
+    "retained_in_h2_by_segment": {
+      "0": 0.8968,
+      "1": 0.9396,
+      "2": 0.9178,
+      "3": 0.8965,
+      "4": 0.9584,
+      "5": 0.9052,
+      "6": 0.9799
+    },
+    "eta2_log_hours_h2_by_segment": 0.3868247490229516,
+    "eta2_log_hours_h2_by_h1_hours_decile": 0.4840452225399558,
+    "eta2_log_hours_h2_by_h1_hours_equal_k_groups": 0.4732854189944211,
+    "eta2_retained_by_segment": 0.017172486991476877,
+    "eta2_retained_by_h1_hours_decile": 0.0166416407111304,
+    "eta2_retained_by_h1_hours_equal_k_groups": 0.01669006602035222,
+    "equal_k_groups": 7
+  },
+  "als": {
+    "rank": 16,
+    "trained_on": "first half (slots < 3074), 10% viewer sample",
+    "n_train_users": 1343565,
+    "n_channels_with_factors": 7288,
+    "n_families": 12,
+    "h1_viewers_with_embedding": 13430863
+  },
+  "als_variant": {
+    "k": 7,
+    "variants": {
+      "behaviour_only": {
+        "k": 7,
+        "silhouette": 0.24909711604144402,
+        "bootstrap_ari_mean": 0.8236579869158774,
+        "bootstrap_ari_min": 0.7572765877112643,
+        "n_sample": 671458,
+        "n_features": 15,
+        "eta2_log_hours_h2": 0.3878912834687988,
+        "eta2_retained_h2": 0.01880730403035612
+      },
+      "behaviour_plus_embedding": {
+        "k": 7,
+        "silhouette": 0.17686303269654358,
+        "bootstrap_ari_mean": 0.4722185168562633,
+        "bootstrap_ari_min": 0.39807994128944135,
+        "n_sample": 671458,
+        "n_features": 31,
+        "eta2_log_hours_h2": 0.33153105661600757,
+        "eta2_retained_h2": 0.01408963604551892
+      }
+    },
+    "note": "silhouette is not comparable across feature spaces of different dimension; ARI and eta2 are"
+  },
+  "channel_affinity_top": {
+    "2": [
+      {
+        "channel": "yeunda",
+        "lift": 16.77,
+        "viewers": 4773
+      },
+      {
+        "channel": "inecr7024",
+        "lift": 13.23,
+        "viewers": 2774
+      },
+      {
+        "channel": "fazon",
+        "lift": 13.16,
+        "viewers": 2641
+      },
+      {
+        "channel": "herrbergmann",
+        "lift": 12.2,
+        "viewers": 4645
+      },
+      {
+        "channel": "rainblue37",
+        "lift": 11.86,
+        "viewers": 12518
+      },
+      {
+        "channel": "jaewon4915",
+        "lift": 11.8,
+        "viewers": 6836
+      },
+      {
+        "channel": "zeosite",
+        "lift": 11.79,
+        "viewers": 2284
+      },
+      {
+        "channel": "qcnb123",
+        "lift": 11.6,
+        "viewers": 2164
+      },
+      {
+        "channel": "dda_ju",
+        "lift": 11.13,
+        "viewers": 5621
+      },
+      {
+        "channel": "dua3362",
+        "lift": 10.91,
+        "viewers": 4787
+      }
+    ],
+    "4": [
+      {
+        "channel": "jstreaming_",
+        "lift": 19.7,
+        "viewers": 5917
+      },
+      {
+        "channel": "reyfutt",
+        "lift": 19.42,
+        "viewers": 8906
+      },
+      {
+        "channel": "partidosligaarg",
+        "lift": 19.14,
+        "viewers": 8675
+      },
+      {
+        "channel": "comprador_x90",
+        "lift": 19.1,
+        "viewers": 4547
+      },
+      {
+        "channel": "juanps",
+        "lift": 18.91,
+        "viewers": 3784
+      },
+      {
+        "channel": "afsaf101",
+        "lift": 18.71,
+        "viewers": 5144
+      },
+      {
+        "channel": "quackityhq",
+        "lift": 10.49,
+        "viewers": 2939
+      },
+      {
+        "channel": "iiocmz",
+        "lift": 10.06,
+        "viewers": 10214
+      },
+      {
+        "channel": "banderitax",
+        "lift": 8.2,
+        "viewers": 1946
+      },
+      {
+        "channel": "realshelfy",
+        "lift": 8.11,
+        "viewers": 1492
+      }
+    ],
+    "3": [
+      {
+        "channel": "kalashnikov_live",
+        "lift": 1.66,
+        "viewers": 5916
+      },
+      {
+        "channel": "ggooddfrogg",
+        "lift": 1.65,
+        "viewers": 6237
+      },
+      {
+        "channel": "realplaytv",
+        "lift": 1.65,
+        "viewers": 6405
+      },
+      {
+        "channel": "la_mortis",
+        "lift": 1.65,
+        "viewers": 4786
+      },
+      {
+        "channel": "victorvirran",
+        "lift": 1.62,
+        "viewers": 7164
+      },
+      {
+        "channel": "bitterway",
+        "lift": 1.62,
+        "viewers": 5686
+      },
+      {
+        "channel": "swddemon",
+        "lift": 1.61,
+        "viewers": 7224
+      },
+      {
+        "channel": "blindsir",
+        "lift": 1.61,
+        "viewers": 4823
+      },
+      {
+        "channel": "3lekzender",
+        "lift": 1.61,
+        "viewers": 5473
+      },
+      {
+        "channel": "sandra_owl",
+        "lift": 1.6,
+        "viewers": 7557
+      }
+    ],
+    "6": [
+      {
+        "channel": "akim",
+        "lift": 15.11,
+        "viewers": 3631
+      },
+      {
+        "channel": "ahrileth",
+        "lift": 12.35,
+        "viewers": 3935
+      },
+      {
+        "channel": "solluminati",
+        "lift": 11.92,
+        "viewers": 4668
+      },
+      {
+        "channel": "swaggersouls",
+        "lift": 11.63,
+        "viewers": 2234
+      },
+      {
+        "channel": "barcagamer",
+        "lift": 11.25,
+        "viewers": 5551
+      },
+      {
+        "channel": "estailus",
+        "lift": 9.53,
+        "viewers": 3539
+      },
+      {
+        "channel": "polecat324",
+        "lift": 9.52,
+        "viewers": 2102
+      },
+      {
+        "channel": "meej52",
+        "lift": 9.5,
+        "viewers": 3341
+      },
+      {
+        "channel": "robertocein",
+        "lift": 9.33,
+        "viewers": 5504
+      },
+      {
+        "channel": "troydangaming",
+        "lift": 9.17,
+        "viewers": 1293
+      }
+    ],
+    "5": [
+      {
+        "channel": "laserluca",
+        "lift": 14.05,
+        "viewers": 1936
+      },
+      {
+        "channel": "fuzeiii",
+        "lift": 13.52,
+        "viewers": 9867
+      },
+      {
+        "channel": "auslove",
+        "lift": 11.13,
+        "viewers": 2019
+      },
+      {
+        "channel": "cyrilsk",
+        "lift": 10.82,
+        "viewers": 1727
+      },
+      {
+        "channel": "folagorlives",
+        "lift": 10.02,
+        "viewers": 4162
+      },
+      {
+        "channel": "gothika_47",
+        "lift": 9.7,
+        "viewers": 2033
+      },
+      {
+        "channel": "dimitrioui",
+        "lift": 9.57,
+        "viewers": 4688
+      },
+      {
+        "channel": "gamemeneer",
+        "lift": 9.51,
+        "viewers": 1603
+      },
+      {
+        "channel": "guep",
+        "lift": 8.71,
+        "viewers": 1428
+      },
+      {
+        "channel": "farodgames",
+        "lift": 8.7,
+        "viewers": 1405
+      }
+    ],
+    "1": [
+      {
+        "channel": "venomxreap",
+        "lift": 2.95,
+        "viewers": 5357
+      },
+      {
+        "channel": "luhxzyy",
+        "lift": 2.82,
+        "viewers": 4549
+      },
+      {
+        "channel": "trustedfate",
+        "lift": 2.75,
+        "viewers": 15953
+      },
+      {
+        "channel": "funprodigy",
+        "lift": 2.62,
+        "viewers": 4469
+      },
+      {
+        "channel": "alexramigaming",
+        "lift": 2.59,
+        "viewers": 18817
+      },
+      {
+        "channel": "typicaltony777",
+        "lift": 2.56,
+        "viewers": 4615
+      },
+      {
+        "channel": "uclatwitchcat",
+        "lift": 2.53,
+        "viewers": 4279
+      },
+      {
+        "channel": "tarmacbe",
+        "lift": 2.45,
+        "viewers": 2217
+      },
+      {
+        "channel": "drzardkhane",
+        "lift": 2.43,
+        "viewers": 2436
+      },
+      {
+        "channel": "trueinfamy",
+        "lift": 2.43,
+        "viewers": 3936
+      }
+    ],
+    "0": [
+      {
+        "channel": "yuhwanp",
+        "lift": 22.34,
+        "viewers": 3907
+      },
+      {
+        "channel": "thebubbaarmy",
+        "lift": 18.72,
+        "viewers": 2330
+      },
+      {
+        "channel": "botanicx",
+        "lift": 18.3,
+        "viewers": 1305
+      },
+      {
+        "channel": "xop0",
+        "lift": 16.83,
+        "viewers": 723
+      },
+      {
+        "channel": "igromania",
+        "lift": 15.37,
+        "viewers": 4670
+      },
+      {
+        "channel": "ngc_the_twitch",
+        "lift": 14.84,
+        "viewers": 2708
+      },
+      {
+        "channel": "underground_dv",
+        "lift": 13.76,
+        "viewers": 5792
+      },
+      {
+        "channel": "waterhyacinth_",
+        "lift": 13.01,
+        "viewers": 1155
+      },
+      {
+        "channel": "yousayix",
+        "lift": 11.2,
+        "viewers": 1334
+      },
+      {
+        "channel": "sunbaking",
+        "lift": 11.08,
+        "viewers": 5805
+      }
+    ]
+  },
+  "segment_names": {
+    "0": "Light single-channel viewers",
+    "1": "Regular viewers",
+    "2": "Light clock 12-18h viewers",
+    "3": "Heavy viewers",
+    "4": "Light clock 00-06h viewers",
+    "5": "Light clock 18-24h viewers",
+    "6": "Light clock 06-12h viewers"
+  }
+}

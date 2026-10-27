@@ -1,0 +1,75 @@
+{
+  "population": {
+    "definition": "viewers with any activity in slots [0, 3 weeks); post = week 3",
+    "n": 14201600,
+    "mu_post": 2.8823113006042376,
+    "sd_post": 4.432077065254267,
+    "mu_pre": 7.771773872896953,
+    "sd_pre": 10.214678938882612,
+    "rho": 0.714600502997916,
+    "return_rate": 0.7962161305768364,
+    "q": [
+      1.1666666666666665,
+      8.166666666666666,
+      21.000000000000004,
+      33.0
+    ]
+  },
+  "sample_size_for_simulation": 3000138,
+  "mde_naive_relative": {
+    "10000": 0.06092355734417918,
+    "100000": 0.019265720436748505,
+    "500000": 0.008615892106415318
+  },
+  "mde_cuped_relative": {
+    "10000": 0.04261802590765562,
+    "100000": 0.013477003124825658,
+    "500000": 0.006027099024017451
+  },
+  "n_per_arm_for_2pct_effect": {
+    "naive": 92792,
+    "cuped": 45408
+  },
+  "aa_ab_simulation": {
+    "n_per_arm": 20000,
+    "reps": 400,
+    "injected_relative_effect": 0.03,
+    "population_mean_post_hours": 2.8803937241109128,
+    "naive": {
+      "aa_false_positive_rate": 0.06,
+      "aa_mean_se": 0.04422486217587579,
+      "ab_power": 0.4675,
+      "ab_mean_estimated_effect": 0.08553655812500016,
+      "ab_true_effect": 0.08641181172332738,
+      "ab_ci95_coverage_of_true_effect": 0.9375
+    },
+    "cuped": {
+      "aa_false_positive_rate": 0.0575,
+      "aa_mean_se": 0.03097400098633334,
+      "ab_power": 0.795,
+      "ab_mean_estimated_effect": 0.08678206703664053,
+      "ab_true_effect": 0.08641181172332738,
+      "ab_ci95_coverage_of_true_effect": 0.9675
+    },
+    "variance_reduction_se_ratio_squared": 0.49052555681001436,
+    "pre_post_correlation": 0.7138038652400205
+  },
+  "sequential": {
+    "aa": {
+      "naive_peeking_reject_rate": 0.17,
+      "msprt_reject_rate": 0.006666666666666667,
+      "msprt_median_stop_n_per_arm": 20000.0
+    },
+    "ab": {
+      "naive_peeking_reject_rate": 0.9866666666666667,
+      "msprt_reject_rate": 0.86,
+      "msprt_median_stop_n_per_arm": 24000.0
+    },
+    "looks": 10,
+    "n_max_per_arm": 40000,
+    "reps": 300,
+    "injected_relative_effect": 0.03,
+    "tau2_prior": 0.003318667202359013
+  },
+  "label": "SIMULATION: injected synthetic effect on real Twitch variance; no real experiment was run."
+}

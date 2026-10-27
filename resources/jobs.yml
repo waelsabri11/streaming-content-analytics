@@ -16,6 +16,29 @@ resources:
             python_file: ../jobs/run.py
             parameters: ["netflix", "--catalog", "${var.catalog}", "--raw-root", "/Volumes/${var.catalog}/bronze/raw", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
 
+    sca_lakehouse:
+      name: sca-lakehouse-${bundle.target}
+      max_concurrent_runs: 1
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "5"
+            dependencies:
+              - ../dist/*.whl
+              - databricks-feature-engineering
+      tasks:
+        - task_key: netflix
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["netflix", "--catalog", "${var.catalog}", "--raw-root", "/Volumes/${var.catalog}/bronze/raw", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: lakehouse
+          depends_on: [{task_key: netflix}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["lakehouse", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+
     sca_twitch:
       name: sca-twitch-${bundle.target}
       max_concurrent_runs: 1
@@ -55,3 +78,27 @@ resources:
           spark_python_task:
             python_file: ../jobs/run.py
             parameters: ["twitch-lifecurves", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: churn
+          depends_on: [{task_key: features}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["twitch-churn", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: abtest
+          depends_on: [{task_key: features}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["twitch-abtest", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: streaming_replay
+          depends_on: [{task_key: silver}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["twitch-streaming", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]
+        - task_key: optimize_demo
+          depends_on: [{task_key: silver}]
+          environment_key: default
+          spark_python_task:
+            python_file: ../jobs/run.py
+            parameters: ["optimize-demo", "--catalog", "${var.catalog}", "--results-dir", "/Volumes/${var.catalog}/gold/results"]

@@ -1,0 +1,213 @@
+{
+  "governance": {
+    "comments": [
+      "workspace.bronze.twitch_interactions",
+      "workspace.silver.twitch_view_sessions",
+      "workspace.gold.twitch_viewer_features",
+      "workspace.gold.twitch_viewer_segments",
+      "workspace.gold.netflix_cohort",
+      "workspace.gold.netflix_performance_score",
+      "workspace.gold.netflix_life_curves",
+      "workspace.gold.netflix_value_index"
+    ],
+    "tags": [
+      "workspace.bronze.twitch_interactions",
+      "workspace.silver.twitch_view_sessions",
+      "workspace.gold.twitch_viewer_features",
+      "workspace.gold.twitch_viewer_segments",
+      "workspace.gold.netflix_cohort",
+      "workspace.gold.netflix_performance_score",
+      "workspace.gold.netflix_life_curves",
+      "workspace.gold.netflix_value_index"
+    ],
+    "constraints": [
+      "workspace.silver.twitch_view_sessions.positive_duration: NOT ADDED ([DELTA_CONSTRAINT_ALREADY_EXISTS] Constraint 'positive_duration' already exists. Please delete the old constraint first.)",
+      "workspace.silver.twitch_view_sessions.session_ge_1: NOT ADDED ([DELTA_CONSTRAINT_ALREADY_EXISTS] Constraint 'session_ge_1' already exists. Please delete the old constraint first.\nOld )",
+      "workspace.gold.twitch_viewer_features.hours_positive: NOT ADDED ([DELTA_CONSTRAINT_ALREADY_EXISTS] Constraint 'hours_positive' already exists. Please delete the old constraint first.\nOl)",
+      "workspace.gold.netflix_cohort.views_positive: NOT ADDED ([DELTA_CONSTRAINT_ALREADY_EXISTS] Constraint 'views_positive' already exists. Please delete the old constraint first.\nOl)"
+    ],
+    "skipped": []
+  },
+  "governance_seconds": 34.5,
+  "delta_demo": {
+    "table": "workspace.silver.netflix_titles_merge_demo",
+    "rows_before": 115952,
+    "rows_after_merge": 115962,
+    "rows_after_second_merge": 115962,
+    "merge_seconds": 4.85,
+    "change_data_feed": {
+      "update_preimage": 25,
+      "update_postimage": 25,
+      "insert": 10
+    },
+    "time_travel_rows_at_v0": 115952,
+    "rows_after_restore": 115952,
+    "versions": [
+      13,
+      14
+    ]
+  },
+  "delta_demo_seconds": 34.8,
+  "feature_tables": {
+    "fs_viewer_behaviour": {
+      "rows": 15524309,
+      "primary_keys": [
+        "user_id"
+      ]
+    },
+    "fs_netflix_title_prerelease": {
+      "rows": 2535,
+      "primary_keys": [
+        "title_key"
+      ]
+    }
+  },
+  "feature_tables_seconds": 37.3,
+  "optimize_demo": {
+    "rows": 47532050,
+    "lookup_viewers": 2000,
+    "before": {
+      "median_s": 2.059,
+      "runs_s": [
+        3.589,
+        1.743,
+        2.059,
+        2.378,
+        1.907
+      ]
+    },
+    "files_before": 39,
+    "optimize_compact_seconds": 12.1,
+    "after_optimize_compaction": {
+      "median_s": 1.722,
+      "runs_s": [
+        2.228,
+        1.493,
+        2.109,
+        1.632,
+        1.722
+      ]
+    },
+    "files_after_optimize": 10,
+    "optimize_clustering_seconds": 49.5,
+    "after_liquid_clustering": {
+      "median_s": 1.831,
+      "runs_s": [
+        2.558,
+        2.608,
+        1.831,
+        1.377,
+        1.579
+      ]
+    },
+    "files_after_clustering": 8,
+    "vacuum_seconds": 22.1
+  },
+  "optimize_demo_seconds": 156.0,
+  "reproduce": {
+    "version": 5,
+    "rows_at_version": 2535,
+    "rows_logged": 2535,
+    "y_sum_matches_logged": true,
+    "current_rows": 2535,
+    "current_version": 14
+  },
+  "reproduce_seconds": 4.6,
+  "lineage": {
+    "edges": [
+      {
+        "source": "workspace.gold.twitch_user_channel_day",
+        "target": "workspace.gold.twitch_channel_daily"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_channel_families"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_churn_test"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_churn_train"
+      },
+      {
+        "source": "workspace.gold.twitch_user_channel_day",
+        "target": "workspace.gold.twitch_retention_weeks"
+      },
+      {
+        "source": "workspace.gold.twitch_viewer_segments",
+        "target": "workspace.gold.twitch_segment_channel_affinity"
+      },
+      {
+        "source": "workspace.silver.twitch_streamers",
+        "target": "workspace.gold.twitch_segment_channel_affinity"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_segment_channel_affinity"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_sessions"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_user_channel_day"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_viewer_embeddings_h1"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_viewer_features"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_viewer_features_h1"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.gold.twitch_viewer_features_h2"
+      },
+      {
+        "source": "workspace.gold.twitch_viewer_features",
+        "target": "workspace.gold.twitch_viewer_segments"
+      },
+      {
+        "source": "workspace.silver.netflix_titles",
+        "target": "workspace.silver.netflix_titles_merge_demo"
+      },
+      {
+        "source": "workspace.silver.netflix_titles_merge_demo",
+        "target": "workspace.silver.netflix_titles_merge_demo"
+      },
+      {
+        "source": "workspace.silver.tune_unclustered",
+        "target": "workspace.silver.tune_liquid"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.silver.tune_unclustered"
+      },
+      {
+        "source": "workspace.silver.twitch_view_sessions",
+        "target": "workspace.silver.twitch_presence_replay_source"
+      },
+      {
+        "source": "workspace.bronze.twitch_interactions",
+        "target": "workspace.silver.twitch_streamers"
+      },
+      {
+        "source": "workspace.bronze.twitch_interactions",
+        "target": "workspace.silver.twitch_view_sessions"
+      },
+      {
+        "source": "workspace.silver.twitch_streamers",
+        "target": "workspace.silver.twitch_view_sessions"
+      }
+    ]
+  },
+  "lineage_seconds": 4.8
+}

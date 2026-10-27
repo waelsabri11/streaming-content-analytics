@@ -145,6 +145,10 @@ def run(raw_dir: Path | None = None, spark=None, mlflow_tracking: bool = True) -
                          "by_kind": cohort["kind"].value_counts().to_dict(),
                          "imdb_matched_share": float(cohort["imdb_matched"].mean())}
         _to_delta(spark, cohort.drop(columns=["title_alt"], errors="ignore"), "gold", "netflix_cohort")
+        snapshot = {"table": config.table("gold", "netflix_cohort"), "rows": int(len(cohort)), "y_sum": float(cohort["y"].sum())}
+        if spark is not None:  # Delta version the model is trained from: lets a run be reproduced with time travel
+            snapshot["delta_version"] = int(spark.sql(f"DESCRIBE HISTORY {snapshot['table']}").first()["version"])
+        res["training_snapshot"] = snapshot
 
         # ---- performance score
         folds, preds = {}, []
@@ -159,7 +163,7 @@ def run(raw_dir: Path | None = None, spark=None, mlflow_tracking: bool = True) -
         res["score"] = {"target": "log(views in release semester)", "folds": folds, "primary_fold": TEST_SEMESTERS[-1]}
         pred_df = pd.concat(preds)
         res["score"]["shap_top"] = shap_importance(last)
-        res["score"]["mlflow"] = log_mlflow(last, folds[TEST_SEMESTERS[-1]]) if mlflow_tracking else None
+        res["score"]["mlflow"] = log_mlflow(last, folds[TEST_SEMESTERS[-1]], snapshot) if mlflow_tracking else None
         keep = ["title_key", "title_raw", "kind", "primary_genre", "rel_sem", "release_date", "season_no", "y", "pred", "lo", "hi", "fold",
                 "prior_season_log_views"]
         _to_delta(spark, pred_df[keep], "gold", "netflix_performance_score")
@@ -219,7 +223,7 @@ def shap_importance(fold_result: dict, top: int = 15) -> list[dict]:
     return [{"feature": k, "mean_abs_shap": float(v)} for k, v in imp.head(top).items()]
 
 
-def log_mlflow(fold_result: dict, metrics: dict) -> dict | None:
+def log_mlflow(fold_result: dict, metrics: dict, snapshot: dict | None = None) -> dict | None:
     """Log the primary-fold model. On Databricks the registry is Unity Catalog (`databricks-uc`)."""
     try:
         import mlflow
@@ -236,6 +240,8 @@ def log_mlflow(fold_result: dict, metrics: dict) -> dict | None:
         mlflow.set_experiment("netflix-performance-score" if not on_databricks() else "/Shared/netflix-performance-score")
         with mlflow.start_run(run_name=f"fold-{metrics['test_semester']}") as run:
             mlflow.log_params({**score.LGB_PARAMS, "test_semester": metrics["test_semester"], "n_train": metrics["n_train"]})
+            if snapshot:
+                mlflow.set_tags({f"snapshot_{k}": str(v) for k, v in snapshot.items()})
             for k, v in metrics["lightgbm"].items():
                 mlflow.log_metric(f"test_{k}", v)
             mlflow.log_metric("conformal_coverage", metrics["conformal"]["empirical_coverage"])
@@ -246,6 +252,31 @@ def log_mlflow(fold_result: dict, metrics: dict) -> dict | None:
             x_ex, _ = design(fold_result["_test"].head(5), fold_result["_cats"])
             sig = infer_signature(x_ex, fold_result["_model"].predict(x_ex))
             info = mlflow.lightgbm.log_model(fold_result["_model"], "model", registered_model_name=name, signature=sig)
-            return {"run_id": run.info.run_id, "registered_model": name, "model_uri": info.model_uri}
+            out = {"run_id": run.info.run_id, "registered_model": name, "model_uri": info.model_uri}
+            if name:
+                out["alias"] = set_alias(name, info, metrics["lightgbm"]["spearman"])
+            return out
     except Exception as e:  # logging must never fail the pipeline
         return {"error": f"{type(e).__name__}: {e}"}
+
+
+def set_alias(name: str, info, spearman: float) -> str:
+    """First registered version becomes `champion`; later ones are `challenger` and are promoted only if better."""
+    from mlflow import MlflowClient
+
+    c = MlflowClient()
+    version = info.registered_model_version
+    try:
+        champ = c.get_model_version_by_alias(name, "champion")
+    except Exception:  # noqa: BLE001 - no champion yet
+        c.set_registered_model_alias(name, "champion", version)
+        c.set_model_version_tag(name, version, "test_spearman", str(spearman))
+        return f"champion=v{version}"
+    c.set_model_version_tag(name, version, "test_spearman", str(spearman))
+    champ_s = float(champ.tags.get("test_spearman", "-inf"))
+    if spearman > champ_s:
+        c.set_registered_model_alias(name, "champion", version)
+        c.set_registered_model_alias(name, "challenger", champ.version)
+        return f"promoted v{version} (spearman {spearman:.4f} > {champ_s:.4f}); previous champion v{champ.version} -> challenger"
+    c.set_registered_model_alias(name, "challenger", version)
+    return f"challenger=v{version} (spearman {spearman:.4f} <= champion {champ_s:.4f})"

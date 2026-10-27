@@ -1,0 +1,70 @@
+{
+  "replay": true,
+  "event_time": "synthetic: 2018-01-01 + slot*10min",
+  "per_channel": {
+    "wall_seconds": 288.01,
+    "batches": 28,
+    "input_rows": 4162135,
+    "rows_per_second_overall": 14451.458469634847,
+    "batch_latency_source": "query progress (batchDuration)",
+    "progress_keys": [
+      "batchDuration",
+      "batchId",
+      "durationMs",
+      "eventTime",
+      "id",
+      "inputRowsPerSecond",
+      "name",
+      "numInputRows",
+      "observedMetrics",
+      "processedRowsPerSecond",
+      "runId",
+      "sink",
+      "sources",
+      "stateOperators",
+      "timestamp"
+    ],
+    "batch_seconds_p50": 8.2675,
+    "batch_seconds_p95": 10.089849999999998,
+    "batch_seconds_p99": 38.086300000000016,
+    "output_rows": 0
+  },
+  "platform": {
+    "wall_seconds": 204.74,
+    "batches": 29,
+    "input_rows": 4162135,
+    "rows_per_second_overall": 20328.707709290982,
+    "batch_latency_source": "query progress (batchDuration)",
+    "progress_keys": [
+      "batchDuration",
+      "batchId",
+      "durationMs",
+      "eventTime",
+      "id",
+      "inputRowsPerSecond",
+      "name",
+      "numInputRows",
+      "observedMetrics",
+      "processedRowsPerSecond",
+      "runId",
+      "sink",
+      "sources",
+      "stateOperators",
+      "timestamp"
+    ],
+    "batch_seconds_p50": 6.262,
+    "batch_seconds_p95": 9.304599999999999,
+    "batch_seconds_p99": 11.755319999999996,
+    "output_rows": 1004
+  },
+  "prepare": {
+    "events": 4162135,
+    "chunks": 28,
+    "write_seconds": 48.1,
+    "viewer_pct": 2,
+    "slots": [
+      0,
+      1008
+    ]
+  }
+}
